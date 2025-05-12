@@ -1,4 +1,4 @@
-import Bullet from '../Bullet.js';
+import Bullet from '../entities/Bullet.js';
 
 // --- Global Variables ---
 let hero;
