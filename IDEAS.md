@@ -1,3 +1,4 @@
+
 ## 1. Reanimated Runner:
 
 - Gameplay: Endless runner en perspectiva lateral. El jugador controla un personaje pixelado reanimado que debe correr y saltar sobre obstáculos (lápidas, ramas, etc.) en un cementerio que se genera proceduralmente.
@@ -169,43 +170,53 @@
 ## 29. Guardian de la Cripta:
 
 - Gameplay: Juego de reacción en un carril con gráficos pixelados. Desde el fondo de la pantalla se acercan almas
+- Objetivo: Evitar que un cierto número de almas perturben la paz de la cripta.
+Hook: Jugabilidad rápida y desafiante que pone a prueba los reflejos y el timing, con un estilo visual claro y una sensación de protección solemne.
 
----
+## 30. **"NecroPlague"** *(Survival Horror / Acción)*
 
-## 1. **"NecroPlague"** *(Survival Horror / Acción)*  
-   - Juego de supervivencia tipo *Top-down* donde controlas a un **médico necromante** que revive cadáveres para defenderse de una plaga zombi.  
-   - **Mecánica única**: Usas los cuerpos de enemigos derrotados como aliados temporales.  
+- Juego de supervivencia tipo *Top-down* donde controlas a un **médico necromante** que revive cadáveres para defenderse de una plaga zombi.  
+- **Mecánica única**: Usas los cuerpos de enemigos derrotados como aliados temporales.
 
-## 2. **"Grave Digger’s Revenge"** *(Plataformas / Aventura)*  
-   - Eres un **enterrador maldito** que escapa del infierno cavando tumbas y esquivando demonios.  
-   - **Pixel Art**: Estilo *Gothic Horror* con paleta oscura y toques de verde fosforescente.  
+## 30b. Comerciante de Reliquias:
 
-## 3. **"Bone Symphony"** *(Ritmo / Puzzle)*  
-   - Un **esqueleto director** revive una orquesta de muertos: tocas ritmos para resolver puzzles y abrir caminos en un cementerio encantado.  
+- Gameplay: Simulación económica sencilla con interacción con personajes pixelados. El jugador tiene una tienda en un lugar peculiar (¿un cruce de caminos fantasmagórico, un mercado de las sombras?). Debe comprar reliquias pixeladas de valor dudoso (amuletos extraños, huesos brillantes, artefactos malditos) a precios bajos y luego venderlos a clientes excéntricos con márgenes de ganancia.
+- Objetivo: Acumular la mayor cantidad de riqueza posible comprando y vendiendo reliquias.
+- Hook: Un sistema económico simple pero adictivo, la interacción con personajes pintorescos con necesidades y ofertas únicas, y el humor negro inherente al comercio de objetos macabros.
 
-## 4. **"Last Rites"** *(Roguelike / Estrategia)*  
-   - Juego de mazmorras por turnos donde **invocas espíritus** para luchar. Cada alma tiene habilidades únicas (ej: un fantasma que congela enemigos).  
+## 31. **"Grave Digger’s Revenge"** *(Plataformas / Aventura)*
 
-## 5. **"The Crow’s Omen"** *(Metroidvania)*  
-   - Controlas a un **cuervo necrótico** que absorbe habilidades de cadáveres (ej: alas de murciélago para planear, garras de lobo para atacar).  
+- Eres un **enterrador maldito** que escapa del infierno cavando tumbas y esquivando demonios.  
+- **Pixel Art**: Estilo *Gothic Horror* con paleta oscura y toques de verde fosforescente.
 
-## 6. **"Pumpkin Hollow"** *(Simulación / Terror)*  
-   - Administras un **pueblo maldito** donde resucitas NPCs para reconstruirlo. Cada resurrección tiene consecuencias (ej: un aldeano revive… pero con sed de sangre).  
+## 32. **"Bone Symphony"** *(Ritmo / Puzzle)* 
 
-## 7. **"Wraith’s Gambit"** *(Sigilo / Acción)*  
-   - Juego de sigilo donde eres un **fantasma vengativo** que posee cuerpos para infiltrarte y asesinar a tus objetivos.  
+- Un **esqueleto director** revive una orquesta de muertos: tocas ritmos para resolver puzzles y abrir caminos en un cementerio encantado. 
 
-## 8. **"Cursed Catacombs"** *(Puzzle / Aventura)*  
-   - Resuelves acertijos en catacumbas moviendo **ataúdes encantados** y evitando trampas esqueléticas. Inspirado en *"The Lost Vikings"*.  
+## 33. **"Last Rites"** *(Roguelike / Estrategia)* 
 
-## 9. **"Ashes of Eden"** *(RPG / Drama)*  
-   - RPG donde juegas como un **ángel caído** que revive muertos para redimirse. Tus decisiones afectan si los NPCs se convierten en santos o demonios.  
+- Juego de mazmorras por turnos donde **invocas espíritus** para luchar. Cada alma tiene habilidades únicas (ej: un fantasma que congela enemigos).  
 
-## 10. **"Zombie Jazz Club"** *(Minijuegos / Musical)*  
-   - Un *point-and-click* absurdo donde gestionas un **club de jazz para no muertos**. Revives músicos famosos (ej: Elvis esqueleto) para atraer clientes.  
+## 34. **"The Crow’s Omen"** *(Metroidvania)*
 
----
+- Controlas a un **cuervo necrótico** que absorbe habilidades de cadáveres (ej: alas de murciélago para planear, garras de lobo para atacar).
 
-### **Extra: Estilo Visual**  
-- **Paleta de colores**: Negros profundos, morados oscuros, verdes pútridos y rojos sangre.  
-- **Inspiraciones**: *Castlevania*, *Don’t Starve*, *Undertale* y *Corpse Party*.  
+## 35. **"Pumpkin Hollow"** *(Simulación / Terror)*
+
+- Administras un **pueblo maldito** donde resucitas NPCs para reconstruirlo. Cada resurrección tiene consecuencias (ej: un aldeano revive… pero con sed de sangre). 
+
+## 36. **"Wraith’s Gambit"** *(Sigilo / Acción)* 
+
+- Juego de sigilo donde eres un **fantasma vengativo** que posee cuerpos para infiltrarte y asesinar a tus objetivos.  
+
+## 37. **"Cursed Catacombs"** *(Puzzle / Aventura)* 
+
+- Resuelves acertijos en catacumbas moviendo **ataúdes encantados** y evitando trampas esqueléticas. Inspirado en *"The Lost Vikings"*.  
+
+## 38. **"Ashes of Eden"** *(RPG / Drama)*
+
+- RPG donde juegas como un **ángel caído** que revive muertos para redimirse. Tus decisiones afectan si los NPCs se convierten en santos o demonios.  
+
+## 39. **"Zombie Jazz Club"** *(Minijuegos / Musical)*
+
+- Un *point-and-click* absurdo donde gestionas un **club de jazz para no muertos**. Revives músicos famosos (ej: Elvis esqueleto) para atraer clientes.  
