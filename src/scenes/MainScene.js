@@ -1,10 +1,13 @@
 import Bullet from '../entities/Bullet.js';
+import Hero from '../entities/Hero.js';
+import Zombie from '../entities/Zombie.js';
+import Crosshair from '../entities/Crosshair.js';
 
 // --- Global Variables ---
 let hero;
 let ground;
 let zombies;
-let bullets;
+
 let cursors;
 let keyA;
 let keyD;
@@ -15,7 +18,6 @@ let score = 0;
 let scoreText;
 let gameOverText;
 let gameOver = false;
-let heroFacing = 'right';
 let lastShotTime = 0;
 const shotDelay = 100; // Reduced delay for faster shooting
 
@@ -30,46 +32,17 @@ class MainScene extends Phaser.Scene {
     }
 
     preload() {
-        // Create dynamic textures for our simple shapes
-
-        // Hero (Blue Rectangle)
-        let heroGraphics = this.make.graphics({ x: 0, y: 0, add: false });
-        heroGraphics.fillStyle(0x0000ff, 1); // Blue
-        heroGraphics.fillRect(0, 0, 32, 64); // Hero size
-        heroGraphics.generateTexture('hero', 32, 64);
-        heroGraphics.destroy();
-
-        // Zombie (Dark Green Rectangle)
-        let zombieGraphics = this.make.graphics({ x: 0, y: 0, add: false });
-        zombieGraphics.fillStyle(0x006400, 1); // Dark Green
-        zombieGraphics.fillRect(0, 0, 32, 64); // Zombie size
-        zombieGraphics.generateTexture('zombie', 32, 64);
-        zombieGraphics.destroy();
+        Hero.preload(this);
+        Zombie.preload(this);
+        Crosshair.preload(this);
+        Bullet.preload(this);
 
         // Ground (Very Dark Brown Rectangle)
         let groundGraphics = this.make.graphics({ x: 0, y: 0, add: false });
         groundGraphics.fillStyle(0x3d2d1b, 1); // Very Dark Brown
-        groundGraphics.fillRect(0, 0, 1024, 50); // Ground size (wider)
-        groundGraphics.generateTexture('ground', 1024, 50);
+        groundGraphics.fillRect(0, 0, 1024, 300); // Ground size (wider)
+        groundGraphics.generateTexture('ground', 1024, 300);
         groundGraphics.destroy();
-
-        // Bullet (White Square)
-        let bulletGraphics = this.make.graphics({ x: 0, y: 0, add: false });
-        bulletGraphics.fillStyle(0xffffff, 1); // White
-        bulletGraphics.fillRect(0, 0, 8, 8); // Bullet size
-        bulletGraphics.generateTexture('bullet', 8, 8);
-        bulletGraphics.destroy();
-
-        // Crosshair
-        let crosshairGraphics = this.make.graphics({ x: 0, y: 0, add: false });
-        crosshairGraphics.lineStyle(2, 0xff0000, 1);
-        crosshairGraphics.strokeCircle(16, 16, 10);
-        crosshairGraphics.lineBetween(16, 6, 16, 1);  // Top line
-        crosshairGraphics.lineBetween(16, 26, 16, 31); // Bottom line
-        crosshairGraphics.lineBetween(6, 16, 1, 16);   // Left line
-        crosshairGraphics.lineBetween(26, 16, 31, 16); // Right line
-        crosshairGraphics.generateTexture('crosshair', 32, 32);
-        crosshairGraphics.destroy();
     }
 
     create() {
@@ -85,25 +58,21 @@ class MainScene extends Phaser.Scene {
         ground.body.updateFromGameObject();
 
         // Hero
-        hero = this.physics.add.sprite(this.game.config.width / 2, groundY - 70, 'hero');
-        hero.setCollideWorldBounds(true);
-        hero.body.setGravityY(300);
-
-        // Zombies
-        zombies = this.physics.add.group();
-
-        // Bullets
-        bullets = this.physics.add.group({
+        hero = new Hero(this, this.game.config.width / 2, groundY - 70);
+        hero.bullets = this.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
             maxSize: 30
         });
 
+        // Zombies
+        zombies = this.physics.add.group();
+
         // Collisions
         this.physics.add.collider(hero, ground);
         this.physics.add.collider(zombies, ground);
         this.physics.add.collider(hero, zombies, this.zombieHitsHero, null, this);
-        this.physics.add.overlap(bullets, zombies, this.hitZombie, null, this);
+        this.physics.add.overlap(hero.bullets, zombies, this.hitZombie, null, this);
 
         // Input
         cursors = this.input.keyboard.createCursorKeys();
@@ -112,8 +81,7 @@ class MainScene extends Phaser.Scene {
         pointer = this.input.activePointer;
         
         // Crosshair
-        crosshair = this.add.image(0, 0, 'crosshair');
-        crosshair.setDepth(1000); // Make sure it's above everything else
+        crosshair = new Crosshair(this, 0, 0);
 
         // Hide default cursor
         this.input.setDefaultCursor('none');
@@ -121,7 +89,7 @@ class MainScene extends Phaser.Scene {
         // Shooting (mouse click)
         this.input.on('pointerdown', function(pointer) {
             if (!gameOver) {
-                this.shootBullet(pointer.x, pointer.y);
+                hero.handleMouseClick(pointer);
             }
         }, this);
 
@@ -147,9 +115,9 @@ class MainScene extends Phaser.Scene {
             this.physics.world.setBounds(0, 0, gameSize.width, gameSize.height);
             
             // Update ground position and scale
-            ground.setPosition(gameSize.width / 2, Math.floor(gameSize.height * 0.6));
-            ground.setDisplaySize(gameSize.width, 50);
-            ground.body.setSize(gameSize.width, 50);
+            ground.setPosition(gameSize.width / 2, Math.floor(gameSize.height * 0.8));
+            ground.setDisplaySize(gameSize.width, 400);
+            ground.body.setSize(gameSize.width, 400);
             ground.body.updateFromGameObject();
             
             // Update game over text position
@@ -166,18 +134,10 @@ class MainScene extends Phaser.Scene {
         }
 
         // Update crosshair
-        crosshair.setPosition(pointer.x, pointer.y);
+        crosshair.update(pointer.x, pointer.y);
 
         // Hero Movement
-        if (cursors.left.isDown || keyA.isDown) {
-            hero.setVelocityX(-250);
-            heroFacing = 'left';
-        } else if (cursors.right.isDown || keyD.isDown) {
-            hero.setVelocityX(250);
-            heroFacing = 'right';
-        } else {
-            hero.setVelocityX(0);
-        }
+        hero.update(cursors, keyA, keyD);
 
         // Zombie Movement
         zombies.children.iterate(function (zombie) {
@@ -217,28 +177,12 @@ class MainScene extends Phaser.Scene {
         const spawnY = Math.floor(this.scale.height * 0.6) - 64; // Just above ground level
 
         const zombie = zombies.create(spawnX, spawnY, 'zombie');
-        zombie.setCollideWorldBounds(false);
-        zombie.body.setGravityY(300);
-        zombie.setBounce(0.1);
 
         // Set initial velocity towards hero
         if (spawnX < hero.x) {
             zombie.setVelocityX(ZOMBIE_SPEED);
         } else {
             zombie.setVelocityX(-ZOMBIE_SPEED);
-        }
-    }
-
-    shootBullet(targetX, targetY) {
-        const bullet = bullets.get(hero.x, hero.y - 20);
-
-        if (bullet) {
-            // Calculate angle to target
-            const angle = Phaser.Math.Angle.Between(hero.x, hero.y - 20, targetX, targetY);
-            
-            bullet.fire(hero.x, hero.y - 20, angle);
-            
-            heroFacing = targetX < hero.x ? 'left' : 'right';
         }
     }
 

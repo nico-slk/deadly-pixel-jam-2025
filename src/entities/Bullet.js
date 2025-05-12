@@ -5,6 +5,14 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, 'bullet');
     }
 
+    static preload(scene) {
+        let bulletGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
+        bulletGraphics.fillStyle(0xffffff, 1); // White
+        bulletGraphics.fillRect(0, 0, 8, 8); // Bullet size
+        bulletGraphics.generateTexture('bullet', 8, 8);
+        bulletGraphics.destroy();
+    }
+
     fire(x, y, angle) {
         this.body.reset(x, y);
         this.setActive(true);
