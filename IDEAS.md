@@ -169,3 +169,43 @@
 ## 29. Guardian de la Cripta:
 
 - Gameplay: Juego de reacción en un carril con gráficos pixelados. Desde el fondo de la pantalla se acercan almas
+
+---
+
+## 1. **"NecroPlague"** *(Survival Horror / Acción)*  
+   - Juego de supervivencia tipo *Top-down* donde controlas a un **médico necromante** que revive cadáveres para defenderse de una plaga zombi.  
+   - **Mecánica única**: Usas los cuerpos de enemigos derrotados como aliados temporales.  
+
+## 2. **"Grave Digger’s Revenge"** *(Plataformas / Aventura)*  
+   - Eres un **enterrador maldito** que escapa del infierno cavando tumbas y esquivando demonios.  
+   - **Pixel Art**: Estilo *Gothic Horror* con paleta oscura y toques de verde fosforescente.  
+
+## 3. **"Bone Symphony"** *(Ritmo / Puzzle)*  
+   - Un **esqueleto director** revive una orquesta de muertos: tocas ritmos para resolver puzzles y abrir caminos en un cementerio encantado.  
+
+## 4. **"Last Rites"** *(Roguelike / Estrategia)*  
+   - Juego de mazmorras por turnos donde **invocas espíritus** para luchar. Cada alma tiene habilidades únicas (ej: un fantasma que congela enemigos).  
+
+## 5. **"The Crow’s Omen"** *(Metroidvania)*  
+   - Controlas a un **cuervo necrótico** que absorbe habilidades de cadáveres (ej: alas de murciélago para planear, garras de lobo para atacar).  
+
+## 6. **"Pumpkin Hollow"** *(Simulación / Terror)*  
+   - Administras un **pueblo maldito** donde resucitas NPCs para reconstruirlo. Cada resurrección tiene consecuencias (ej: un aldeano revive… pero con sed de sangre).  
+
+## 7. **"Wraith’s Gambit"** *(Sigilo / Acción)*  
+   - Juego de sigilo donde eres un **fantasma vengativo** que posee cuerpos para infiltrarte y asesinar a tus objetivos.  
+
+## 8. **"Cursed Catacombs"** *(Puzzle / Aventura)*  
+   - Resuelves acertijos en catacumbas moviendo **ataúdes encantados** y evitando trampas esqueléticas. Inspirado en *"The Lost Vikings"*.  
+
+## 9. **"Ashes of Eden"** *(RPG / Drama)*  
+   - RPG donde juegas como un **ángel caído** que revive muertos para redimirse. Tus decisiones afectan si los NPCs se convierten en santos o demonios.  
+
+## 10. **"Zombie Jazz Club"** *(Minijuegos / Musical)*  
+   - Un *point-and-click* absurdo donde gestionas un **club de jazz para no muertos**. Revives músicos famosos (ej: Elvis esqueleto) para atraer clientes.  
+
+---
+
+### **Extra: Estilo Visual**  
+- **Paleta de colores**: Negros profundos, morados oscuros, verdes pútridos y rojos sangre.  
+- **Inspiraciones**: *Castlevania*, *Don’t Starve*, *Undertale* y *Corpse Party*.  
