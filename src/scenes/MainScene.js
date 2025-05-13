@@ -3,6 +3,7 @@ import Hero from '../entities/Hero.js';
 import Zombie from '../entities/Zombie.js';
 import Crosshair from '../entities/Crosshair.js';
 import Ground from '../entities/Ground.js';
+import InputManager from '../managers/InputManager.js';
 
 // --- Global Variables ---
 let hero;
@@ -10,11 +11,7 @@ let ground;
 let zombies;
 let crosshair;
 
-let pointer;
-let cursors;
-let keyA;
-let keyD;
-let keyW;
+let inputManager;
 
 let score = 0;
 let scoreText;
@@ -63,11 +60,7 @@ class MainScene extends Phaser.Scene {
         this.physics.add.overlap(hero.bullets, zombies, this.hitZombie, null, this);
 
         // Input
-        cursors = this.input.keyboard.createCursorKeys();
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        pointer = this.input.activePointer;
+        inputManager = new InputManager(this);
         
         // Crosshair
         crosshair = new Crosshair(this, 0, 0);
@@ -110,16 +103,16 @@ class MainScene extends Phaser.Scene {
         this.startSpawningZombies(this);
     }
 
-    update(time) {
+    update(time, delta) {
         if (gameOver) {
             return;
         }
 
         // crosshair
-        crosshair.update(time, pointer.x, pointer.y);
+        crosshair.update(time, delta, inputManager.pointer);
 
         // Hero
-        hero.update(time, cursors, keyA, keyD, keyW, pointer);
+        hero.update(time, delta, inputManager);
 
         // Zombies
         zombies.children.iterate(function (zombie) {

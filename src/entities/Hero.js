@@ -28,35 +28,32 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         heroGraphics.destroy();
     }
 
-    update(time, cursors, keyA, keyD, keyW, pointer) {
-        if (cursors.left.isDown || keyA.isDown) {
+    update(time, delta, inputManager) {
+        // movement
+        if (inputManager.left()) {
             this.setVelocityX(-this.speed);
             this.heroFacing = 'left';
-        } else if (cursors.right.isDown || keyD.isDown) {
+        } else if (inputManager.right()) {
             this.setVelocityX(this.speed);
             this.heroFacing = 'right';
         } else {
             this.setVelocityX(0);
         }
 
-        if ((cursors.up.isDown || keyW.isDown) && this.body.onFloor()) {
-            this.setVelocityY(-this.jumpSpeed); // Jump
+        // Jump
+        if (inputManager.up() && this.body.onFloor()) {
+            this.setVelocityY(-this.jumpSpeed); 
         }
 
-        if (pointer.isDown) {
-            this.shootBullet(pointer.x, pointer.y);
+        // shooting
+        if (inputManager.leftMouseButtonDown()) {
+            this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
         }
         
         // update bullets
         this.bullets.children.iterate((bullet) => {
             bullet.update(time);
         });        
-    }
-
-    handleMouseClick(pointer) {
-        if (pointer.isDown) {
-            this.shootBullet(pointer.x, pointer.y);
-        }
     }
 
     shootBullet(targetX, targetY) {

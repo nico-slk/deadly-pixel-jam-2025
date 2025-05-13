@@ -17,8 +17,8 @@ class Crosshair extends Phaser.GameObjects.Image {
         crosshairGraphics.destroy();
     }
 
-    update(time, x, y) {
-        this.setPosition(x, y);
+    update(time, delta, pointer) {
+        this.setPosition(pointer.x, pointer.y);
     }
 }
 
