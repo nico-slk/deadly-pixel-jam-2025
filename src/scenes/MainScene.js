@@ -4,27 +4,25 @@ import Zombie from '../entities/Zombie.js';
 import Crosshair from '../entities/Crosshair.js';
 import Ground from '../entities/Ground.js';
 import InputManager from '../managers/InputManager.js';
+import { hitZombie, zombieHitsHero } from '../events/CollisionEvents.js';
 
 // --- Global Variables ---
 let hero;
 let ground;
 let zombies;
 let crosshair;
-
 let inputManager;
-
-let score = 0;
-let scoreText;
-let gameOverText;
-let gameOver = false;
+let collisionsDict = {};
 
 const ZOMBIE_SPAWN_DELAY_INITIAL = 2000;
-let zombieSpawnDelay = ZOMBIE_SPAWN_DELAY_INITIAL;
-let zombieTimer;
 
 class MainScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MainScene' });
+        this.gameOver = false;
+        this.gameOverText = null;
+        this.zombieSpawnDelay = ZOMBIE_SPAWN_DELAY_INITIAL;
+        this.zombieTimer = {};
     }
 
     preload() {
@@ -54,10 +52,10 @@ class MainScene extends Phaser.Scene {
         zombies = this.physics.add.group();
 
         // Collisions
-        this.physics.add.collider(hero, ground);
-        this.physics.add.collider(zombies, ground);
-        this.physics.add.collider(hero, zombies, this.zombieHitsHero, null, this);
-        this.physics.add.overlap(hero.bullets, zombies, this.hitZombie, null, this);
+        collisionsDict["heroWithGround"] = this.physics.add.collider(hero, ground);
+        collisionsDict["zombieWithGround"] = this.physics.add.collider(zombies, ground);
+        collisionsDict["heroWithZombies"] = this.physics.add.collider(hero, zombies, () => zombieHitsHero(hero, zombies, this), null, this);
+        collisionsDict["bulletWithZombies"] = this.physics.add.overlap(hero.bullets, zombies, (bullet, zombie) => hitZombie(bullet, zombie, this), null, this);
 
         // Input
         inputManager = new InputManager(this);
@@ -67,22 +65,15 @@ class MainScene extends Phaser.Scene {
 
         // Hide default cursor
         this.input.setDefaultCursor('none');
-        
-        // UI - Score Text
-        scoreText = this.add.text(16, 16, 'Score: 0', {
-            fontSize: '24px',
-            fontFamily: '"Arial Black", Gadget, sans-serif',
-            fill: '#FFF'
-        });
 
         // UI - Game Over Text (initially invisible)
-        gameOverText = this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'GAME OVER', {
+        this.gameOverText = this.add.text(this.game.config.width / 2, this.game.config.height / 2, 'GAME OVER', {
             fontSize: '64px',
             fontFamily: '"Arial Black", Gadget, sans-serif',
             fill: '#ff0000'
         });
-        gameOverText.setOrigin(0.5);
-        gameOverText.setVisible(false);
+        this.gameOverText.setOrigin(0.5);
+        this.gameOverText.setVisible(false);
 
         // Handle window resizing
         this.scale.on('resize', function (gameSize) {
@@ -96,7 +87,7 @@ class MainScene extends Phaser.Scene {
             ground.body.updateFromGameObject();
             
             // Update game over text position
-            gameOverText.setPosition(gameSize.width / 2, gameSize.height / 2);
+            this.gameOverText.setPosition(gameSize.width / 2, gameSize.height / 2);
         }, this);
 
         // Start spawning zombies
@@ -104,7 +95,7 @@ class MainScene extends Phaser.Scene {
     }
 
     update(time, delta) {
-        if (gameOver) {
+        if (this.gameOver) {
             return;
         }
 
@@ -122,8 +113,8 @@ class MainScene extends Phaser.Scene {
 
     // --- Helper Functions ---
     startSpawningZombies(scene) {
-        zombieTimer = scene.time.addEvent({
-            delay: zombieSpawnDelay,
+        this.zombieTimer = scene.time.addEvent({
+            delay: this.zombieSpawnDelay,
             callback: this.spawnZombie,
             callbackScope: this,
             loop: true
@@ -144,40 +135,6 @@ class MainScene extends Phaser.Scene {
             zombie.setVelocityX(100);
         } else {
             zombie.setVelocityX(-100);
-        }
-    }
-
-    hitZombie(bullet, zombie) {
-        bullet.setActive(false);
-        bullet.setVisible(false);
-        bullet.body.stop();
-        bullet.destroy();
-
-        zombie.destroy();
-
-        score += 10;
-        scoreText.setText('Score: ' + score);
-
-        // Increase difficulty
-        zombieSpawnDelay = Math.max(500, zombieSpawnDelay * 0.98);
-
-        if (zombieTimer) {
-            zombieTimer.delay = zombieSpawnDelay;
-        }
-    }
-
-    zombieHitsHero(hero, zombie) {
-        this.physics.pause();
-        hero.setTint(0xff0000);
-        gameOver = true;
-        gameOverText.setVisible(true);
-
-        // Show cursor again when game is over
-        this.input.setDefaultCursor('default');
-        
-        // Stop spawning new zombies
-        if (zombieTimer) {
-            zombieTimer.remove();
         }
     }
 }

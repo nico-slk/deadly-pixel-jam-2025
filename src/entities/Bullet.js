@@ -32,11 +32,15 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         // Deactivate bullet if it goes off screen
         if (this.x < -50 || this.x > gameWidth + 50 || 
             this.y < -50 || this.y > gameHeight + 50) {
-            this.setActive(false);
-            this.setVisible(false);
-            this.body.stop();
-            this.destroy();
+            this.finalize();
         }
+    }
+
+    finalize(){
+        this.setActive(false);
+        this.setVisible(false);
+        this.body.stop();
+        this.destroy();
     }
 }
 
