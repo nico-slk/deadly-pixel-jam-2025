@@ -1,73 +1,92 @@
-import Bullet from '../entities/Bullet.js';
+import Bullet from "../entities/Bullet.js";
+import { createHeroSprites } from "../sprites.js/hero.js";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
+  constructor(scene, x, y) {
+    super(scene, x, y);
+    scene.add.existing(this);
+    scene.physics.add.existing(this);
 
-    constructor(scene, x, y) {
-        super(scene, x, y, 'hero');
-        scene.add.existing(this);
-        scene.physics.add.existing(this);
+    this.setCollideWorldBounds(true);
+    this.body.setGravityY(300);
 
-        this.setCollideWorldBounds(true);
-        this.body.setGravityY(300);
+    this.heroFacing = "right";
+    this.speed = 50;
+    this.jumpSpeed = 400;
+    this.bullets = scene.physics.add.group({
+      classType: Bullet,
+      runChildUpdate: true,
+      maxSize: 30,
+    });
+  }
 
-        this.heroFacing = 'right';
-        this.speed = 250;
-        this.jumpSpeed = 400;
-        this.bullets = scene.physics.add.group({
-            classType: Bullet,
-            runChildUpdate: true,
-            maxSize: 30
-        });
+  static preload(scene) {
+    // let heroGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
+    // heroGraphics.fillStyle(0x0000ff, 1); // Blue
+    // heroGraphics.fillRect(0, 0, 32, 64); // Hero size
+    // heroGraphics.generateTexture('hero', 32, 64);
+    // heroGraphics.destroy();
+    createHeroSprites(scene);
+  }
+
+  update(time, delta, inputManager) {
+    this.body.setSize(18, 32);
+    this.body.setOffset(14, 9);
+    let moving = false;
+    // movement
+    if (inputManager.left()) {
+      this.anims.play("hero-walk", true);
+      this.setVelocityX(-this.speed);
+      this.flipX = true;
+      this.heroFacing = "left";
+      moving = true;
+    } else if (inputManager.right()) {
+      this.anims.play("hero-walk", true);
+      this.setVelocityX(this.speed);
+      this.heroFacing = "right";
+      this.flipX = false;
+      moving = true;
     }
 
-    static preload(scene) {
-        let heroGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
-        heroGraphics.fillStyle(0x0000ff, 1); // Blue
-        heroGraphics.fillRect(0, 0, 32, 64); // Hero size
-        heroGraphics.generateTexture('hero', 32, 64);
-        heroGraphics.destroy();
+    if (!moving) {
+      this.setVelocityX(0);
+      this.anims.play("hero-idle", true);
     }
 
-    update(time, delta, inputManager) {
-        // movement
-        if (inputManager.left()) {
-            this.setVelocityX(-this.speed);
-            this.heroFacing = 'left';
-        } else if (inputManager.right()) {
-            this.setVelocityX(this.speed);
-            this.heroFacing = 'right';
-        } else {
-            this.setVelocityX(0);
-        }
-
-        // Jump
-        if (inputManager.up() && this.body.onFloor()) {
-            this.setVelocityY(-this.jumpSpeed); 
-        }
-
-        // shooting
-        if (inputManager.leftMouseButtonDown()) {
-            this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
-        }
-        
-        // update bullets
-        this.bullets.children.iterate((bullet) => {
-            bullet.update(time);
-        });        
+    // Jump
+    if (inputManager.up() && this.body.onFloor()) {
+      this.anims.play("hero-jump", true);
+      this.setVelocityY(-this.jumpSpeed);
     }
 
-    shootBullet(targetX, targetY) {
-        const bullet = this.bullets.get(this.x, this.y - 20);
-
-        if (bullet) {
-            // Calculate angle to target
-            const angle = Phaser.Math.Angle.Between(this.x, this.y - 20, targetX, targetY);
-            
-            bullet.fire(this.x, this.y - 20, angle);
-            
-            this.heroFacing = targetX < this.x ? 'left' : 'right';
-        }
+    // shooting
+    if (inputManager.leftMouseButtonDown()) {
+      this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
     }
+
+    // update bullets
+    this.bullets.children.iterate((bullet) => {
+      bullet.update(time);
+    });
+  }
+
+  shootBullet(targetX, targetY) {
+    const bullet = this.bullets.get(this.x, this.y);
+
+    if (bullet) {
+      // Calculate angle to target
+      const angle = Phaser.Math.Angle.Between(
+        this.x,
+        this.y - 20,
+        targetX,
+        targetY
+      );
+
+      bullet.fire(this.x, this.y, angle);
+
+      this.heroFacing = targetX < this.x ? "left" : "right";
+    }
+  }
 }
 
 export default Hero;
