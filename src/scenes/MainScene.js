@@ -14,6 +14,7 @@ let pointer;
 let cursors;
 let keyA;
 let keyD;
+let keyW;
 
 let score = 0;
 let scoreText;
@@ -65,6 +66,7 @@ class MainScene extends Phaser.Scene {
         cursors = this.input.keyboard.createCursorKeys();
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         pointer = this.input.activePointer;
         
         // Crosshair
@@ -73,13 +75,6 @@ class MainScene extends Phaser.Scene {
         // Hide default cursor
         this.input.setDefaultCursor('none');
         
-        // Shooting (mouse click)
-        this.input.on('pointerdown', function(pointer) {
-            if (!gameOver) {
-                hero.handleMouseClick(pointer);
-            }
-        }, this);
-
         // UI - Score Text
         scoreText = this.add.text(16, 16, 'Score: 0', {
             fontSize: '24px',
@@ -124,7 +119,7 @@ class MainScene extends Phaser.Scene {
         crosshair.update(time, pointer.x, pointer.y);
 
         // Hero
-        hero.update(time, cursors, keyA, keyD);
+        hero.update(time, cursors, keyA, keyD, keyW, pointer);
 
         // Zombies
         zombies.children.iterate(function (zombie) {

@@ -16,7 +16,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.bullets = scene.physics.add.group({
             classType: Bullet,
             runChildUpdate: true,
-            maxSize: 10
+            maxSize: 30
         });
     }
 
@@ -28,7 +28,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         heroGraphics.destroy();
     }
 
-    update(time, cursors, keyA, keyD) {
+    update(time, cursors, keyA, keyD, keyW, pointer) {
         if (cursors.left.isDown || keyA.isDown) {
             this.setVelocityX(-this.speed);
             this.heroFacing = 'left';
@@ -39,8 +39,12 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityX(0);
         }
 
-        if (cursors.up.isDown && this.body.onFloor()) {
+        if ((cursors.up.isDown || keyW.isDown) && this.body.onFloor()) {
             this.setVelocityY(-this.jumpSpeed); // Jump
+        }
+
+        if (pointer.isDown) {
+            this.shootBullet(pointer.x, pointer.y);
         }
         
         // update bullets
