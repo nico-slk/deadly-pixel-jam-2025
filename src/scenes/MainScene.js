@@ -2,17 +2,18 @@ import Bullet from '../entities/Bullet.js';
 import Hero from '../entities/Hero.js';
 import Zombie from '../entities/Zombie.js';
 import Crosshair from '../entities/Crosshair.js';
+import Ground from '../entities/Ground.js';
 
 // --- Global Variables ---
 let hero;
 let ground;
 let zombies;
+let crosshair;
 
+let pointer;
 let cursors;
 let keyA;
 let keyD;
-let crosshair;
-let pointer;
 
 let score = 0;
 let scoreText;
@@ -33,13 +34,7 @@ class MainScene extends Phaser.Scene {
         Zombie.preload(this);
         Crosshair.preload(this);
         Bullet.preload(this);
-
-        // Ground (Very Dark Brown Rectangle)
-        let groundGraphics = this.make.graphics({ x: 0, y: 0, add: false });
-        groundGraphics.fillStyle(0x3d2d1b, 1); // Very Dark Brown
-        groundGraphics.fillRect(0, 0, 1024, 300); // Ground size (wider)
-        groundGraphics.generateTexture('ground', 1024, 300);
-        groundGraphics.destroy();
+        Ground.preload(this);
     }
 
     create() {
@@ -56,11 +51,6 @@ class MainScene extends Phaser.Scene {
 
         // Hero
         hero = new Hero(this, this.game.config.width / 2, groundY - 70);
-        hero.bullets = this.physics.add.group({
-            classType: Bullet,
-            runChildUpdate: true,
-            maxSize: 30
-        });
 
         // Zombies
         zombies = this.physics.add.group();
@@ -173,6 +163,7 @@ class MainScene extends Phaser.Scene {
         bullet.setActive(false);
         bullet.setVisible(false);
         bullet.body.stop();
+        bullet.destroy();
 
         zombie.destroy();
 

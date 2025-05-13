@@ -1,4 +1,4 @@
-const BULLET_SPEED = 800;
+const BULLET_SPEED = 1200;
 
 class Bullet extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -19,10 +19,9 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
         this.setVisible(true);
         this.body.allowGravity = false;
 
-        // Calculate velocity based on angle
-        const speed = BULLET_SPEED;
-        this.body.velocity.x = Math.cos(angle) * speed;
-        this.body.velocity.y = Math.sin(angle) * speed;
+        // Calculate velocity based oan angle
+        this.body.velocity.x = Math.cos(angle) * BULLET_SPEED;
+        this.body.velocity.y = Math.sin(angle) * BULLET_SPEED;
     }
 
     update(time, delta) {
@@ -36,6 +35,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
             this.setActive(false);
             this.setVisible(false);
             this.body.stop();
+            this.destroy();
         }
     }
 }

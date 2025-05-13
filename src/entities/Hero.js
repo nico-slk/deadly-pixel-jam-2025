@@ -1,3 +1,5 @@
+import Bullet from '../entities/Bullet.js';
+
 class Hero extends Phaser.Physics.Arcade.Sprite {
 
     constructor(scene, x, y) {
@@ -10,7 +12,12 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
         this.heroFacing = 'right';
         this.speed = 250;
-        this.jumpSpeed = 400;        
+        this.jumpSpeed = 400;
+        this.bullets = scene.physics.add.group({
+            classType: Bullet,
+            runChildUpdate: true,
+            maxSize: 10
+        });
     }
 
     static preload(scene) {
@@ -35,11 +42,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         if (cursors.up.isDown && this.body.onFloor()) {
             this.setVelocityY(-this.jumpSpeed); // Jump
         }
-
+        
         // update bullets
         this.bullets.children.iterate((bullet) => {
             bullet.update(time);
-        });
+        });        
     }
 
     handleMouseClick(pointer) {
