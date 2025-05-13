@@ -1,3 +1,5 @@
+const ZOMBIE_SPEED = 100;
+
 class Zombie extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
         super(scene, x, y, 'zombie');
@@ -16,20 +18,21 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
         zombieGraphics.destroy();
     }
 
-    static createZombie(scene, x, y) {
-        const zombie = new Zombie(scene, x, y);
-        zombie.setVelocityX(-100); // Move left
-        zombie.setCollideWorldBounds(false);
-        zombie.setBounce(1); // Bounce off walls
-        return zombie;
-    }
+    update(time, hero) {
+        if (this.x < hero.x) {
+            // Zombie is on the left of hero, move right
+            this.setVelocityX(ZOMBIE_SPEED);
+        } else if (this.x > hero.x) {
+            // Zombie is on the right of hero, move left
+            this.setVelocityX(-ZOMBIE_SPEED);
+        } else {
+            // Zombie is exactly at hero's x position
+            this.setVelocityX(0);
+        }
 
-    update() {
-        // Check if the zombie is off-screen and reset its position
-        if (this.x < -50) {
-            this.setActive(false);
-            this.setVisible(false);
-            this.body.stop();
+        // Destroy zombies if they go way off screen
+        if (this.y > this.game.config.height + 100) {
+            this.destroy();
         }
     }
 }

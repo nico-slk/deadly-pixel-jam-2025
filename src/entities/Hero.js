@@ -9,8 +9,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         this.body.setGravityY(300);
 
         this.heroFacing = 'right';
-
-        
+        this.speed = 250;
+        this.jumpSpeed = 400;        
     }
 
     static preload(scene) {
@@ -21,22 +21,25 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         heroGraphics.destroy();
     }
 
-    update(cursors, keyA, keyD) {
-        const speed = 250;
-
+    update(time, cursors, keyA, keyD) {
         if (cursors.left.isDown || keyA.isDown) {
-            this.setVelocityX(-speed);
+            this.setVelocityX(-this.speed);
             this.heroFacing = 'left';
         } else if (cursors.right.isDown || keyD.isDown) {
-            this.setVelocityX(speed);
+            this.setVelocityX(this.speed);
             this.heroFacing = 'right';
         } else {
             this.setVelocityX(0);
         }
 
         if (cursors.up.isDown && this.body.onFloor()) {
-            this.setVelocityY(-400); // Jump
+            this.setVelocityY(-this.jumpSpeed); // Jump
         }
+
+        // update bullets
+        this.bullets.children.iterate((bullet) => {
+            bullet.update(time);
+        });
     }
 
     handleMouseClick(pointer) {

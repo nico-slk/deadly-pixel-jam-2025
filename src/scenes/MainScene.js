@@ -18,10 +18,7 @@ let score = 0;
 let scoreText;
 let gameOverText;
 let gameOver = false;
-let lastShotTime = 0;
-const shotDelay = 100; // Reduced delay for faster shooting
 
-const ZOMBIE_SPEED = 100;
 const ZOMBIE_SPAWN_DELAY_INITIAL = 2000;
 let zombieSpawnDelay = ZOMBIE_SPAWN_DELAY_INITIAL;
 let zombieTimer;
@@ -133,29 +130,15 @@ class MainScene extends Phaser.Scene {
             return;
         }
 
-        // Update crosshair
-        crosshair.update(pointer.x, pointer.y);
+        // crosshair
+        crosshair.update(time, pointer.x, pointer.y);
 
-        // Hero Movement
-        hero.update(cursors, keyA, keyD);
+        // Hero
+        hero.update(time, cursors, keyA, keyD);
 
-        // Zombie Movement
+        // Zombies
         zombies.children.iterate(function (zombie) {
-            if (zombie.x < hero.x) {
-                // Zombie is on the left of hero, move right
-                zombie.setVelocityX(ZOMBIE_SPEED);
-            } else if (zombie.x > hero.x) {
-                // Zombie is on the right of hero, move left
-                zombie.setVelocityX(-ZOMBIE_SPEED);
-            } else {
-                // Zombie is exactly at hero's x position
-                zombie.setVelocityX(0);
-            }
-
-            // Destroy zombies if they go way off screen
-            if (zombie.y > this.game.config.height + 100) {
-                 zombie.destroy();
-            }
+            zombie.update(time, hero);
         }, this);
     }
 
@@ -174,15 +157,15 @@ class MainScene extends Phaser.Scene {
         
         // Randomly choose left or right edge for spawn location
         const spawnX = Phaser.Math.Between(0, 1) === 0 ? -30 : gameWidth + 30;
-        const spawnY = Math.floor(this.scale.height * 0.6) - 64; // Just above ground level
+        const spawnY = Math.floor(this.scale.height * 0.5) - 64; // Just above ground level
 
         const zombie = zombies.create(spawnX, spawnY, 'zombie');
 
         // Set initial velocity towards hero
         if (spawnX < hero.x) {
-            zombie.setVelocityX(ZOMBIE_SPEED);
+            zombie.setVelocityX(100);
         } else {
-            zombie.setVelocityX(-ZOMBIE_SPEED);
+            zombie.setVelocityX(-100);
         }
     }
 
@@ -198,6 +181,7 @@ class MainScene extends Phaser.Scene {
 
         // Increase difficulty
         zombieSpawnDelay = Math.max(500, zombieSpawnDelay * 0.98);
+
         if (zombieTimer) {
             zombieTimer.delay = zombieSpawnDelay;
         }
