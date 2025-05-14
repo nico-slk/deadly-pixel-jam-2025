@@ -13,8 +13,8 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
     static preload(scene) {
         let zombieGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
         zombieGraphics.fillStyle(0x006400, 1); // Dark Green
-        zombieGraphics.fillRect(0, 0, 32, 64); // Zombie size
-        zombieGraphics.generateTexture('zombie', 32, 64);
+        zombieGraphics.fillRect(0, 0, 18, 32); // Zombie size
+        zombieGraphics.generateTexture('zombie', 18, 32);
         zombieGraphics.destroy();
     }
 

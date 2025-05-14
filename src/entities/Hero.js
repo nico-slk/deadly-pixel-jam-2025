@@ -21,11 +21,6 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   static preload(scene) {
-    // let heroGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
-    // heroGraphics.fillStyle(0x0000ff, 1); // Blue
-    // heroGraphics.fillRect(0, 0, 32, 64); // Hero size
-    // heroGraphics.generateTexture('hero', 32, 64);
-    // heroGraphics.destroy();
     createHeroSprites(scene);
   }
 

@@ -106,30 +106,6 @@ class MainScene extends Phaser.Scene {
     this.gameOverText.setOrigin(0.5);
     this.gameOverText.setVisible(false);
 
-    // Handle window resizing
-    this.scale.on(
-      "resize",
-      function (gameSize) {
-        // Update game boundaries
-        this.physics.world.setBounds(0, 0, gameSize.width, gameSize.height);
-
-        hero.setPosition(Math.floor(gameSize.width / 2), groundY - 70);
-
-        // Update ground position and scale
-        ground.setPosition(
-          gameSize.width / 2,
-          Math.floor(gameSize.height * 0.8)
-        );
-        ground.setDisplaySize(gameSize.width, 100);
-        ground.body.setSize(gameSize.width, 400);
-        ground.body.updateFromGameObject();
-
-        // Update game over text position
-        this.gameOverText.setPosition(gameSize.width / 2, gameSize.height / 2);
-      },
-      this
-    );
-
     // Start spawning zombies
     this.startSpawningZombies(this);
   }
