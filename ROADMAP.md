@@ -22,5 +22,7 @@ Lista de "features" y "user stories"
   - [ ] Progresión de niveles
 - [ ] Armas
   - [ ] Arma a distancia
+- [ ] Imagen / arte de fondo
+- [ ] Música
 - [ ] Menu inicio
 - [ ] Menu pausa
