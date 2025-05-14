@@ -7,7 +7,7 @@ const HERO_SPRITES = [
   },
   {
     id: "hero-jump",
-    path: "./assets/Jump/player jump left 48x48-sheet.png",
+    path: "./assets/Jump/player new jump 48x48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
