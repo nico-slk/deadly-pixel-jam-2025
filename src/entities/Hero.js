@@ -1,3 +1,4 @@
+import { createHeroAnimation } from "../animations/hero.js";
 import Bullet from "../entities/Bullet.js";
 import { createHeroSprites } from "../sprites.js/hero.js";
 
@@ -14,7 +15,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     this.heroFacing = "right";
 
-    this.speed = 50;
+    this.speed = 60;
     this.jumpSpeed = 400;
 
     // state machine for animations

@@ -1,0 +1,17 @@
+const ZOMBIE_SPRITES = [
+  {
+    id: "zombie-walk",
+    path: "./assets/Walk/PlayerWalk 48x48.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
+];
+
+export const createZombieSprites = ({ load }) => {
+  ZOMBIE_SPRITES.forEach(({ id, path, frameWidth, frameHeight }) => {
+    load.spritesheet(id, path, {
+      frameWidth,
+      frameHeight,
+    });
+  });
+};

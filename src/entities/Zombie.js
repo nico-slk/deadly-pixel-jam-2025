@@ -1,37 +1,47 @@
+import { createZombieSprites } from "../sprites.js/zombie.js";
+
 const ZOMBIE_SPEED = 100;
 
 class Zombie extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
-        super(scene, x, y, 'zombie');
+        super(scene, x, y, 'zombie-walk');
         scene.add.existing(this);
         scene.physics.add.existing(this);
+
         this.setCollideWorldBounds(false);
         this.body.setGravityY(300);
+        this.body.setSize(18, 32);
+        this.body.setOffset(14, 9);
         this.setBounce(0.1);
+
+        // state machine for animataions
+        this.moving = true;
+        this.flipX = true; // Default to facing left
+        
+        console.log("Zombie created at: ", x, y);
+        this.anims.play("zombie-walk", true);
     }
 
     static preload(scene) {
-        let zombieGraphics = scene.make.graphics({ x: 0, y: 0, add: false });
-        zombieGraphics.fillStyle(0x006400, 1); // Dark Green
-        zombieGraphics.fillRect(0, 0, 18, 32); // Zombie size
-        zombieGraphics.generateTexture('zombie', 18, 32);
-        zombieGraphics.destroy();
+        createZombieSprites(scene);
     }
 
     update(time, hero) {
         if (this.x < hero.x) {
             // Zombie is on the left of hero, move right
             this.setVelocityX(ZOMBIE_SPEED);
+            this.flipX = false; // Face right
         } else if (this.x > hero.x) {
-            // Zombie is on the right of hero, move left
+            // Zombie is on the left of hero, move left
             this.setVelocityX(-ZOMBIE_SPEED);
+            this.flipX = true; // Face left
         } else {
             // Zombie is exactly at hero's x position
             this.setVelocityX(0);
         }
 
         // Destroy zombies if they go way off screen
-        if (this.y > this.game.config.height + 100) {
+        if (this.y > 2000) {
             this.destroy();
         }
     }

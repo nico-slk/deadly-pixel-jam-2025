@@ -13,6 +13,8 @@
 export function zombieHitsHero (hero, zombie, scene) {
     scene.physics.pause();
     hero.setTint(0xff0000);
+    hero.anims.stop();
+    hero.setVelocity(0);
     scene.gameOver = true;
     scene.gameOverText.setVisible(true);
 
