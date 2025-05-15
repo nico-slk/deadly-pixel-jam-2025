@@ -1,3 +1,4 @@
+import { createHeroAnimation } from "../animations/hero.js";
 import Bullet from "../entities/Bullet.js";
 import { createHeroSprites } from "../sprites.js/hero.js";
 
@@ -9,10 +10,18 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
     this.body.setGravityY(300);
+    this.body.setSize(18, 32);
+    this.body.setOffset(14, 9);
 
     this.heroFacing = "right";
-    this.speed = 150;
+
+    this.speed = 60;
     this.jumpSpeed = 400;
+
+    // state machine for animations
+    this.moving = false;
+    this.jumping = false;
+
     this.bullets = scene.physics.add.group({
       classType: Bullet,
       runChildUpdate: true,
@@ -35,6 +44,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.body.setSize(18, 32);
     this.body.setOffset(14, 9);
     let moving = false;
+
+    if (this.body.onFloor() && this.jumping) {
+      this.jumping = false;
+    }
+
     // movement
     if (inputManager.left() && this.body.onFloor()) {
       this.anims.play("hero-walk", true);

@@ -3,7 +3,8 @@
 Lista de "features" y "user stories"
 
 - [ ] Hero
-  - [ ] Movimiento (logica, animación, acción, colisiones, efecto de sonido)
+  - [ ] Movimiento (lógica, animación, acción, colisiones, efecto de sonido)
+    - [ ] Idle
     - [ ] Caminar
     - [ ] Correr
     - [ ] Ataque
@@ -12,7 +13,7 @@ Lista de "features" y "user stories"
     - [ ] Muerte
   - [ ] Salud / hitpoints
 - [ ] Enemigos
-  - [ ] Movimiento (logica, animación, acción, colisiones, efecto de sonido)
+  - [ ] Movimiento (lógica, animación, acción, colisiones, efecto de sonido)
     - [ ] Caminar
     - [ ] Ataque
     - [ ] Daño
@@ -26,3 +27,8 @@ Lista de "features" y "user stories"
 - [ ] Música
 - [ ] Menu inicio
 - [ ] Menu pausa
+
+
+## Github project
+
+https://github.com/users/nico-slk/projects/1

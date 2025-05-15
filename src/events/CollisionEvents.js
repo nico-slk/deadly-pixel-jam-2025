@@ -14,12 +14,11 @@ export function zombieHitsHero(hero, zombie, scene) {
   hero.anims.play("hero-death", true);
   hero.setY(437);
   hero.setTint(0xff0000);
+  hero.anims.stop();
+  hero.setVelocity(0);
   scene.gameOver = true;
   scene.gameOverText.setVisible(true);
   scene.physics.pause();
-
-  // let heroDeath = hero.anims.play("hero-death", true);
-  //   heroDeath.destroy();
 
   // Show cursor again when game is over
   scene.input.setDefaultCursor("default");

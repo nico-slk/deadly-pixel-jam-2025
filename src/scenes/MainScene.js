@@ -1,11 +1,13 @@
 import Bullet from "../entities/Bullet.js";
 import Hero from "../entities/Hero.js";
 import Zombie from "../entities/Zombie.js";
+import Zombies from "../entities/Zombies.js";
 import Crosshair from "../entities/Crosshair.js";
 import Ground from "../entities/Ground.js";
 import InputManager from "../managers/InputManager.js";
 import { hitZombie, zombieHitsHero } from "../events/CollisionEvents.js";
 import { createHeroAnimation } from "../animations/hero.js";
+import { createZombieAnimation } from "../animations/zombie.js";
 
 // --- Global Variables ---
 let hero;
@@ -39,45 +41,30 @@ class MainScene extends Phaser.Scene {
 
     // Ground
     const groundY = Math.floor(this.game.config.height * 0.6);
-    ground = this.physics.add.staticImage(
-      this.game.config.width / 2,
-      groundY,
-      "ground"
-    );
-
+    ground = this.physics.add.staticImage(this.game.config.width / 2, groundY, "ground");
     ground.setDisplaySize(this.game.config.width, 50);
-
     ground.body.setSize(this.game.config.width, 50);
     ground.body.updateFromGameObject();
 
     // Hero
     hero = new Hero(this, this.game.config.width / 2, groundY - 70);
-
-    // AGREGADO POR NICO PARA PROBAR ANIMACIONES
-
     createHeroAnimation(this);
 
-    // AGREGADO POR NICO PARA PROBAR ANIMACIONES
-
     // Zombies
-    zombies = this.physics.add.group();
+    zombies = new Zombies(this);
+    createZombieAnimation(this);
 
     // Collisions
     collisionsDict["heroWithGround"] = this.physics.add.collider(hero, ground);
-    collisionsDict["zombieWithGround"] = this.physics.add.collider(
-      zombies,
-      ground
-    );
+    collisionsDict["zombieWithGround"] = this.physics.add.collider(zombies, ground);
     collisionsDict["heroWithZombies"] = this.physics.add.collider(
-      hero,
-      zombies,
+      hero, zombies,
       () => zombieHitsHero(hero, zombies, this),
       null,
       this
     );
     collisionsDict["bulletWithZombies"] = this.physics.add.overlap(
-      hero.bullets,
-      zombies,
+      hero.bullets, zombies,
       (bullet, zombie) => hitZombie(bullet, zombie, this),
       null,
       this
@@ -138,13 +125,11 @@ class MainScene extends Phaser.Scene {
   }
 
   spawnZombie() {
-    const gameWidth = this.scale.width;
-
     // Randomly choose left or right edge for spawn location
-    const spawnX = Phaser.Math.Between(0, 1) === 0 ? -30 : gameWidth + 30;
+    const spawnX = Phaser.Math.Between(0, 1) === 0 ? -30 : this.scale.width + 30;
     const spawnY = Math.floor(this.scale.height * 0.5) - 64; // Just above ground level
 
-    const zombie = zombies.create(spawnX, spawnY, "zombie");
+    const zombie = zombies.create(spawnX, spawnY, 'zombie-walk');
 
     // Set initial velocity towards hero
     if (spawnX < hero.x) {
