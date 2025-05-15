@@ -1,9 +1,9 @@
 const HERO_ANIMATIONS = [
   {
-    id: "hero-walk",
-    spriteSheet: "hero-walk",
+    id: "hero-run",
+    spriteSheet: "hero-run",
     frames: [0, 1, 2, 3, 4, 5, 6, 7],
-    frameRate: 12,
+    frameRate: 24,
     repeat: -1,
   },
   {

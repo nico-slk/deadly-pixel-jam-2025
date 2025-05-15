@@ -5,6 +5,12 @@ const ZOMBIE_SPRITES = [
     frameWidth: 48,
     frameHeight: 48,
   },
+  {
+    id: "zombie-death",
+    path: "./assets/Death/PlayerDeath.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
 ];
 
 export const createZombieSprites = ({ load }) => {

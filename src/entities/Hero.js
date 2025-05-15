@@ -15,7 +15,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     this.heroFacing = "right";
 
-    this.speed = 60;
+    this.speed = 250;
     this.jumpSpeed = 400;
 
     // state machine for animations
@@ -34,6 +34,10 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta, inputManager) {
+    let moving = false;
+    this.body.setSize(14, 32);
+    this.body.setOffset(14, 10);
+
     if (this.scene.gameOver) return;
 
     if (this.isShooting) {
@@ -41,23 +45,19 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    this.body.setSize(18, 32);
-    this.body.setOffset(14, 9);
-    let moving = false;
-
     if (this.body.onFloor() && this.jumping) {
       this.jumping = false;
     }
 
     // movement
     if (inputManager.left() && this.body.onFloor()) {
-      this.anims.play("hero-walk", true);
+      this.anims.play("hero-run", true);
       this.setVelocityX(-this.speed);
       this.flipX = true;
       this.heroFacing = "left";
       moving = true;
     } else if (inputManager.right() && this.body.onFloor()) {
-      this.anims.play("hero-walk", true);
+      this.anims.play("hero-run", true);
       this.setVelocityX(this.speed);
       this.heroFacing = "right";
       this.flipX = false;
@@ -110,9 +110,11 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   shootBullet(targetX, targetY) {
-    const bullet = this.bullets.get(this.x, this.y);
+    const bullet = this.bullets.get();
 
     if (bullet) {
+      bullet.setActive(true);
+      bullet.setVisible(true);
       // Calculate angle to target
       const angle = Phaser.Math.Angle.Between(
         this.x,
@@ -121,7 +123,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
         targetY
       );
 
-      bullet.fire(this.x, this.y, angle);
+      bullet.fire(this.x, this.y - 20, angle);
 
       this.heroFacing = targetX < this.x ? "left" : "right";
     }

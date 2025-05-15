@@ -12,14 +12,14 @@ const HERO_SPRITES = [
     frameHeight: 48,
   },
   {
-    id: "hero-walk",
-    path: "./assets/Walk/PlayerWalk 48x48.png",
+    id: "hero-run",
+    path: "./assets/Run/player run 48x48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
   {
     id: "hero-death",
-    path: "./assets/Death/Player Death 64x64.png",
+    path: "./assets/Death/PlayerDeath.png",
     frameWidth: 48,
     frameHeight: 48,
   },
