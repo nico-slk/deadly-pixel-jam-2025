@@ -41,20 +41,17 @@ class MainScene extends Phaser.Scene {
 
     // Ground
     const groundY = Math.floor(this.game.config.height * 0.6);
-    ground = this.physics.add.staticImage(this.game.config.width / 2, groundY, "ground" );
-
+    ground = this.physics.add.staticImage(this.game.config.width / 2, groundY, "ground");
     ground.setDisplaySize(this.game.config.width, 50);
-
     ground.body.setSize(this.game.config.width, 50);
     ground.body.updateFromGameObject();
 
     // Hero
     hero = new Hero(this, this.game.config.width / 2, groundY - 70);
     createHeroAnimation(this);
-    
+
     // Zombies
     zombies = new Zombies(this);
-    //zombies = this.physics.add.group();
     createZombieAnimation(this);
 
     // Collisions

@@ -14,11 +14,11 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
         this.body.setOffset(14, 9);
         this.setBounce(0.1);
 
+        this.setTint(0x008800)
+
         // state machine for animataions
-        this.moving = true;
-        this.flipX = true; // Default to facing left
+        this.flipX = true; // Default to left
         
-        console.log("Zombie created at: ", x, y);
         this.anims.play("zombie-walk", true);
     }
 

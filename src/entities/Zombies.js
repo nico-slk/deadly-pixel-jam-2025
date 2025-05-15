@@ -5,12 +5,11 @@ class Zombies extends Phaser.Physics.Arcade.Group {
         super(scene.physics.world, scene);
         
         this.createMultiple({
-            frameQuantity: 10,
+            frameQuantity: 6,
             key: 'zombie-walk',
             active: false,
             visible: false,
-            classType: Zombie,
-            runChildUpdate: true
+            classType: Zombie
         });
     }
 }
