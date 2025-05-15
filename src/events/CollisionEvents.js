@@ -11,11 +11,10 @@ export function hitZombie(bullet, zombie, scene) {
 }
 
 export function zombieHitsHero(hero, zombie, scene) {
-  hero.anims.play("hero-death", true);
-  hero.setY(437);
+  
   hero.setTint(0xff0000);
-  hero.anims.stop();
-  hero.setVelocity(0);
+  hero.anims.play("hero-death", true);
+  
   scene.gameOver = true;
   scene.gameOverText.setVisible(true);
   scene.physics.pause();
