@@ -3,7 +3,7 @@ const HERO_ANIMATIONS = [
     id: "hero-walk",
     spriteSheet: "hero-walk",
     frames: [0, 1, 2, 3, 4, 5, 6, 7],
-    frameRate: 6,
+    frameRate: 12,
     repeat: -1,
   },
   {
@@ -11,14 +11,28 @@ const HERO_ANIMATIONS = [
     spriteSheet: "hero-jump",
     frames: [0, 1, 2, 3, 4, 5],
     frameRate: 6,
-    repeat: -1,
+    repeat: 0,
   },
   {
     id: "hero-idle",
     spriteSheet: "hero-idle",
-    frames: [0, 1, 2, 3, 4, 5, 6, 7],
+    frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     frameRate: 6,
     repeat: -1,
+  },
+  {
+    id: "hero-death",
+    spriteSheet: "hero-death",
+    frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    frameRate: 6,
+    repeat: 0,
+  },
+  {
+    id: "hero-shot",
+    spriteSheet: "hero-shot",
+    frames: [2, 3, 4, 5, 6, 7, 8, 9],
+    frameRate: 12,
+    repeat: 0,
   },
 ];
 

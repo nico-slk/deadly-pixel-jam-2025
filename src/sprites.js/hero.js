@@ -17,6 +17,18 @@ const HERO_SPRITES = [
     frameWidth: 48,
     frameHeight: 48,
   },
+  {
+    id: "hero-death",
+    path: "./assets/Death/Player Death 64x64.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
+  {
+    id: "hero-shot",
+    path: "./assets/Shooting/player shoot 2H 48x48.png",
+    frameWidth: 48,
+    frameHeight: 48,
+  },
 ];
 
 export const createHeroSprites = ({ load }) => {

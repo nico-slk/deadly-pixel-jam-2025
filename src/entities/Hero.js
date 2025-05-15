@@ -11,7 +11,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     this.body.setGravityY(300);
 
     this.heroFacing = "right";
-    this.speed = 50;
+    this.speed = 150;
     this.jumpSpeed = 400;
     this.bullets = scene.physics.add.group({
       classType: Bullet,
@@ -25,17 +25,24 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta, inputManager) {
+    if (this.scene.gameOver) return;
+
+    if (this.isShooting) {
+      this.setVelocityX(0);
+      return;
+    }
+
     this.body.setSize(18, 32);
     this.body.setOffset(14, 9);
     let moving = false;
     // movement
-    if (inputManager.left()) {
+    if (inputManager.left() && this.body.onFloor()) {
       this.anims.play("hero-walk", true);
       this.setVelocityX(-this.speed);
       this.flipX = true;
       this.heroFacing = "left";
       moving = true;
-    } else if (inputManager.right()) {
+    } else if (inputManager.right() && this.body.onFloor()) {
       this.anims.play("hero-walk", true);
       this.setVelocityX(this.speed);
       this.heroFacing = "right";
@@ -43,20 +50,43 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       moving = true;
     }
 
-    if (!moving) {
-      this.setVelocityX(0);
-      this.anims.play("hero-idle", true);
-    }
-
     // Jump
     if (inputManager.up() && this.body.onFloor()) {
+      moving = true;
       this.anims.play("hero-jump", true);
       this.setVelocityY(-this.jumpSpeed);
     }
 
+    // Animation on the air
+    if (!this.body.onFloor()) {
+      this.anims.play("hero-jump", true);
+      moving = true;
+      if (inputManager.right()) {
+        this.setVelocityX(this.speed);
+        this.flipX = false;
+      }
+      if (inputManager.left()) {
+        this.setVelocityX(-this.speed);
+        this.flipX = true;
+      }
+    }
+
+    if (!moving && !inputManager.up()) {
+      this.setVelocityX(0);
+      this.anims.play("hero-idle", true);
+    }
+
     // shooting
-    if (inputManager.leftMouseButtonDown()) {
+    if (inputManager.leftMouseButtonDown() && !this.isShooting) {
+      this.isShooting = true;
+      this.anims.play("hero-shot", true);
+
+      this.flipX = this.x > inputManager.pointer.x;
+
       this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
+      this.once("animationcomplete-hero-shot", () => {
+        this.isShooting = false;
+      });
     }
 
     // update bullets

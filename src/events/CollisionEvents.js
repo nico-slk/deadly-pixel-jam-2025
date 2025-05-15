@@ -1,26 +1,31 @@
- export function hitZombie(bullet, zombie, scene){
-    bullet.finalize();
-    zombie.destroy();
+export function hitZombie(bullet, zombie, scene) {
+  bullet.finalize();
+  zombie.destroy();
 
-    // Increase difficulty
-    scene.zombieSpawnDelay = Math.max(500, scene.zombieSpawnDelay * 0.98);
+  // Increase difficulty
+  scene.zombieSpawnDelay = Math.max(500, scene.zombieSpawnDelay * 0.98);
 
-    if (scene.zombieTimer) {
-        scene.zombieTimer.delay = scene.zombieSpawnDelay;
-    }
+  if (scene.zombieTimer) {
+    scene.zombieTimer.delay = scene.zombieSpawnDelay;
+  }
 }
 
-export function zombieHitsHero (hero, zombie, scene) {
-    scene.physics.pause();
-    hero.setTint(0xff0000);
-    scene.gameOver = true;
-    scene.gameOverText.setVisible(true);
+export function zombieHitsHero(hero, zombie, scene) {
+  hero.anims.play("hero-death", true);
+  hero.setY(437);
+  hero.setTint(0xff0000);
+  scene.gameOver = true;
+  scene.gameOverText.setVisible(true);
+  scene.physics.pause();
 
-    // Show cursor again when game is over
-    scene.input.setDefaultCursor('default');
-    
-    // Stop spawning new zombies
-    if (scene.zombieTimer) {
-        scene.zombieTimer.remove();
-    }
-};
+  // let heroDeath = hero.anims.play("hero-death", true);
+  //   heroDeath.destroy();
+
+  // Show cursor again when game is over
+  scene.input.setDefaultCursor("default");
+
+  // Stop spawning new zombies
+  if (scene.zombieTimer) {
+    scene.zombieTimer.remove();
+  }
+}
