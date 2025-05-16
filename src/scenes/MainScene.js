@@ -36,30 +36,23 @@ class MainScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor("#808080");
 
-    // Ground
-    const groundY = this.createGround();
-
-    // Hero
-    hero = new Hero(this, this.game.config.width / 2, groundY - 70);
     createHeroAnimation(this);
-
-    // Zombies
-    this.zombies = new Zombies(this);
     createZombieAnimation(this);
 
-    // Collisions
+    this.createGround();
+
+    hero = new Hero(this, this.game.config.width / 2, this.game.config.height * 0.5);
+    
+    this.zombies = new Zombies(this);
+    
     this.configureCollisions();
 
-    // Input
     inputManager = new InputManager(this);
 
-    // Crosshair
     crosshair = new Crosshair(this, 0, 0);
 
-    // Hide default cursor
     this.input.setDefaultCursor("none");
 
-    // UI - Game Over Text (initially invisible)
     this.setGameOverScreen();
 
     this.startSpawningZombies();
@@ -70,13 +63,10 @@ class MainScene extends Phaser.Scene {
       return;
     }
 
-    // crosshair
     crosshair.update(time, delta, inputManager.pointer);
 
-    // Hero
     hero.update(time, delta, inputManager);
 
-    // Zombies
     this.zombies.children.iterate(function (zombie) {
       zombie.update(time, hero);
     }, this);
@@ -93,7 +83,6 @@ class MainScene extends Phaser.Scene {
     this.ground.setDisplaySize(this.game.config.width * 2, 50);
     this.ground.body.setSize(this.game.config.width * 2, 50);
     this.ground.body.updateFromGameObject();
-    return groundY;
   }
 
   configureCollisions() {
