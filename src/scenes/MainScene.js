@@ -6,8 +6,8 @@ import Crosshair from "../entities/Crosshair.js";
 import Ground from "../entities/Ground.js";
 import InputManager from "../managers/InputManager.js";
 import { hitZombie, zombieHitsHero } from "../events/CollisionEvents.js";
-import { createHeroAnimation } from "../animations/hero.js";
-import { createZombieAnimation } from "../animations/zombie.js";
+import { createHeroAnimation } from "../animations/heroAnims.js";
+import { createZombieAnimation } from "../animations/zombieAnims.js";
 
 // --- Global Variables ---
 let hero;
@@ -61,18 +61,12 @@ class MainScene extends Phaser.Scene {
     createZombieAnimation(this);
 
     // Collisions
-    // collisionsDict["heroWithGround"] = this.physics.add.collider(hero, ground);
     this.physics.add.collider(this.hero, ground);
     this.physics.add.collider(this.zombies, ground);
-    this.physics.add.collider(this.hero, this.zombies, () => {
-      zombieHitsHero(this.hero, this.zombies, this);
-    });
     this.physics.add.overlap(
       this.hero.bullets,
       this.zombies,
-      (bullet, zombie) => {
-        bullet.finalize(); // Desactiva la bala
-      }
+      (bullet, zombie) => hitZombie(bullet, zombie, this)
     );
 
     // Input
@@ -121,14 +115,6 @@ class MainScene extends Phaser.Scene {
   }
 
   // --- Helper Functions ---
-  // startSpawningZombies(scene) {
-  //   this.zombieTimer = scene.time.addEvent({
-  //     delay: this.zombieSpawnDelay,
-  //     callback: this.spawnZombie,
-  //     callbackScope: this,
-  //     loop: true,
-  //   });
-  // }
   startSpawningZombies() {
     this.zombieTimer = this.time.addEvent({
       delay: this.zombieSpawnDelay,

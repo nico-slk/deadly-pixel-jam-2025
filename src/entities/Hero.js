@@ -1,6 +1,6 @@
-import { createHeroAnimation } from "../animations/hero.js";
+import { createHeroAnimation } from "../animations/heroAnims.js";
 import Bullet from "../entities/Bullet.js";
-import { createHeroSprites } from "../sprites.js/hero.js";
+import { createHeroSprites } from "../sprites.js/heroSprites.js";
 
 class Hero extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y) {
@@ -116,12 +116,7 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       bullet.setActive(true);
       bullet.setVisible(true);
       // Calculate angle to target
-      const angle = Phaser.Math.Angle.Between(
-        this.x,
-        this.y - 20,
-        targetX,
-        targetY
-      );
+      const angle = Phaser.Math.Angle.Between(this.x, this.y, targetX, targetY);
 
       bullet.fire(this.x, this.y - 20, angle);
 

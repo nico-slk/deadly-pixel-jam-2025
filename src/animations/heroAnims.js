@@ -31,7 +31,7 @@ const HERO_ANIMATIONS = [
     id: "hero-shot",
     spriteSheet: "hero-shot",
     frames: [2, 3, 4, 5, 6, 7, 8, 9],
-    frameRate: 12,
+    frameRate: 24,
     repeat: 0,
   },
 ];
