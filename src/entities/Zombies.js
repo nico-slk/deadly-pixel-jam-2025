@@ -1,5 +1,5 @@
 import Zombie from "./Zombie.js";
-import { hitZombie } from "../events/CollisionEvents.js";
+import { hitZombie, zombieHitsHero } from "../events/CollisionEvents.js";
 
 class Zombies extends Phaser.Physics.Arcade.Group {
   constructor(scene) {
@@ -7,14 +7,6 @@ class Zombies extends Phaser.Physics.Arcade.Group {
 
     this.scene = scene;
     this.ground = null;
-
-    // this.createMultiple({
-    //   frameQuantity: 6,
-    //   key: "zombie-walk",
-    //   active: false,
-    //   visible: false,
-    //   classType: Zombie,
-    // });
   }
 
   setGround(ground) {
@@ -29,11 +21,17 @@ class Zombies extends Phaser.Physics.Arcade.Group {
     this.add(zombie); // Agrega al grupo
     this.scene.physics.add.collider(zombie, this.ground);
 
+    zombie.heroCollider = this.scene.physics.add.collider(
+      this.scene.hero,
+      zombie,
+      () => zombieHitsHero(this.scene.hero, zombie, this.scene)
+    );
+
     // Colisión con balas
-    this.scene.physics.add.overlap(
+    zombie.bulletOverlap = this.scene.physics.add.overlap(
       this.scene.hero.bullets,
-      this.zombies,
-      (bullet, zombie) => hitZombie(bullet, zombie, this),
+      zombie,
+      (bullet, zombie) => hitZombie(bullet, zombie, this.scene),
       null,
       this.scene
     );

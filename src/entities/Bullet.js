@@ -7,7 +7,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
     this.setSize(8, 8);
-    this.setOrigin(0.5);
+    this.setOrigin(0, -1.5);
     this.setDepth(1);
     this.setActive(false);
     this.setVisible(false);
@@ -48,11 +48,7 @@ class Bullet extends Phaser.Physics.Arcade.Sprite {
   }
 
   finalize() {
-    this.setVelocity(0);
-    this.setActive(false);
-    this.setVisible(false);
-    this.body.stop();
-    // this.destroy();
+    this.destroy();
   }
 }
 
