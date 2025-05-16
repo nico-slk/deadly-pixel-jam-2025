@@ -11,11 +11,8 @@ import { createZombieAnimation } from "../animations/zombieAnims.js";
 
 // --- Global Variables ---
 let hero;
-let ground;
-let zombies;
 let crosshair;
 let inputManager;
-let collisionsDict = {};
 
 const ZOMBIE_SPAWN_DELAY_INITIAL = 2000;
 
@@ -41,18 +38,17 @@ class MainScene extends Phaser.Scene {
 
     // Ground
     const groundY = Math.floor(this.game.config.height * 0.6);
-    ground = this.physics.add.staticImage(
+    this.ground = this.physics.add.staticImage(
       this.game.config.width / 2,
       groundY,
       "ground"
     );
-    ground.setDisplaySize(this.game.config.width * 2, 50);
-    ground.body.setSize(this.game.config.width * 2, 50);
-    ground.body.updateFromGameObject();
-    this.ground = ground;
+    this.ground.setDisplaySize(this.game.config.width * 2, 50);
+    this.ground.body.setSize(this.game.config.width * 2, 50);
+    this.ground.body.updateFromGameObject();
 
     // Hero
-    this.hero = new Hero(this, this.game.config.width / 2, groundY - 70);
+    hero = new Hero(this, this.game.config.width / 2, groundY - 70);
     createHeroAnimation(this);
 
     // Zombies
@@ -61,10 +57,10 @@ class MainScene extends Phaser.Scene {
     createZombieAnimation(this);
 
     // Collisions
-    this.physics.add.collider(this.hero, ground);
-    this.physics.add.collider(this.zombies, ground);
+    this.physics.add.collider(hero, this.ground);
+    this.physics.add.collider(this.zombies, this.ground);
     this.physics.add.overlap(
-      this.hero.bullets,
+      hero.bullets,
       this.zombies,
       (bullet, zombie) => hitZombie(bullet, zombie, this)
     );
@@ -106,11 +102,11 @@ class MainScene extends Phaser.Scene {
     crosshair.update(time, delta, inputManager.pointer);
 
     // Hero
-    this.hero.update(time, delta, inputManager);
+    hero.update(time, delta, inputManager);
 
     // Zombies
     this.zombies.children.iterate(function (zombie) {
-      zombie.update(time, this.hero);
+      zombie.update(time, hero);
     }, this);
   }
 
@@ -120,7 +116,7 @@ class MainScene extends Phaser.Scene {
       delay: this.zombieSpawnDelay,
       loop: true,
       callback: () => {
-        this.zombies.spawn();
+        this.zombies.spawn(hero);
       },
     });
   }

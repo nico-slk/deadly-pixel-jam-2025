@@ -44,16 +44,13 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
       return;
     }
 
-    if (this.x < hero.x) {
-      // Zombie is on the left of hero, move right
+    if (this.x < hero.x) {              // Zombie is on the left of hero, move right
       this.setVelocityX(ZOMBIE_SPEED);
-      this.flipX = false; // Face right
-    } else if (this.x > hero.x) {
-      // Zombie is on the left of hero, move left
+      this.flipX = false;
+    } else if (this.x > hero.x) {       // Zombie is on the left of hero, move left
       this.setVelocityX(-ZOMBIE_SPEED);
-      this.flipX = true; // Face left
-    } else {
-      // Zombie is exactly at hero's x position
+      this.flipX = true;
+    } else {                            // Zombie is exactly at hero's x position
       this.setVelocityX(0);
     }
 
