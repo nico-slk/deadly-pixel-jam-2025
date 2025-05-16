@@ -9,18 +9,14 @@ class Zombies extends Phaser.Physics.Arcade.Group {
     this.ground = null;
   }
 
-  setGround(ground) {
-    this.ground = ground;
-  }
-
-  spawn(hero) {
+  spawn(hero, ground) {
     const x = Phaser.Math.Between(0, 1) === 0 ? -50 : this.scene.game.config.width + 50;
     const y = Math.floor(this.scene.game.config.height * 0.5) - 32; // Just above ground level
     const zombie = new Zombie(this.scene, x, y);
 
     this.add(zombie);
 
-    this.scene.physics.add.collider(zombie, this.ground);
+    this.scene.physics.add.collider(zombie, ground);
 
     zombie.heroCollider = this.scene.physics.add.collider(
       hero,

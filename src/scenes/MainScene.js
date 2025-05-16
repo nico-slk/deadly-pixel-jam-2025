@@ -9,7 +9,7 @@ import { hitZombie, zombieHitsHero } from "../events/CollisionEvents.js";
 import { createHeroAnimation } from "../animations/heroAnims.js";
 import { createZombieAnimation } from "../animations/zombieAnims.js";
 
-// --- Global Variables ---
+// GLOBAL VARIABLES
 let hero;
 let crosshair;
 let inputManager;
@@ -37,15 +37,7 @@ class MainScene extends Phaser.Scene {
     this.cameras.main.setBackgroundColor("#808080");
 
     // Ground
-    const groundY = Math.floor(this.game.config.height * 0.6);
-    this.ground = this.physics.add.staticImage(
-      this.game.config.width / 2,
-      groundY,
-      "ground"
-    );
-    this.ground.setDisplaySize(this.game.config.width * 2, 50);
-    this.ground.body.setSize(this.game.config.width * 2, 50);
-    this.ground.body.updateFromGameObject();
+    const groundY = this.createGround();
 
     // Hero
     hero = new Hero(this, this.game.config.width / 2, groundY - 70);
@@ -53,17 +45,10 @@ class MainScene extends Phaser.Scene {
 
     // Zombies
     this.zombies = new Zombies(this);
-    this.zombies.setGround(this.ground);
     createZombieAnimation(this);
 
     // Collisions
-    this.physics.add.collider(hero, this.ground);
-    this.physics.add.collider(this.zombies, this.ground);
-    this.physics.add.overlap(
-      hero.bullets,
-      this.zombies,
-      (bullet, zombie) => hitZombie(bullet, zombie, this)
-    );
+    this.configureCollisions();
 
     // Input
     inputManager = new InputManager(this);
@@ -75,21 +60,8 @@ class MainScene extends Phaser.Scene {
     this.input.setDefaultCursor("none");
 
     // UI - Game Over Text (initially invisible)
-    this.gameOverText = this.add.text(
-      this.game.config.width / 2,
-      this.game.config.height / 2,
-      "GAME OVER",
-      {
-        fontSize: "64px",
-        fontFamily: '"Arial Black", Gadget, sans-serif',
-        fill: "#ff0000",
-      }
-    );
-    this.gameOverText.setOrigin(0.5);
-    this.gameOverText.setVisible(false);
+    this.setGameOverScreen();
 
-    // Start spawning zombies
-    this.zombieSpawnDelay = 2000;
     this.startSpawningZombies();
   }
 
@@ -110,13 +82,51 @@ class MainScene extends Phaser.Scene {
     }, this);
   }
 
-  // --- Helper Functions ---
+  // PRIVATE MEMBERS
+  createGround() {
+    const groundY = Math.floor(this.game.config.height * 0.6);
+    this.ground = this.physics.add.staticImage(
+      this.game.config.width / 2,
+      groundY,
+      "ground"
+    );
+    this.ground.setDisplaySize(this.game.config.width * 2, 50);
+    this.ground.body.setSize(this.game.config.width * 2, 50);
+    this.ground.body.updateFromGameObject();
+    return groundY;
+  }
+
+  configureCollisions() {
+    this.physics.add.collider(hero, this.ground);
+    this.physics.add.collider(this.zombies, this.ground);
+    this.physics.add.overlap(
+      hero.bullets,
+      this.zombies,
+      (bullet, zombie) => hitZombie(bullet, zombie, this)
+    );
+  }
+
+  setGameOverScreen() {
+    this.gameOverText = this.add.text(
+      this.game.config.width / 2,
+      this.game.config.height / 2,
+      "GAME OVER",
+      {
+        fontSize: "64px",
+        fontFamily: '"Arial Black", Gadget, sans-serif',
+        fill: "#ff0000",
+      }
+    );
+    this.gameOverText.setOrigin(0.5);
+    this.gameOverText.setVisible(false);
+  }
+
   startSpawningZombies() {
     this.zombieTimer = this.time.addEvent({
       delay: this.zombieSpawnDelay,
       loop: true,
       callback: () => {
-        this.zombies.spawn(hero);
+        this.zombies.spawn(hero, this.ground);
       },
     });
   }
