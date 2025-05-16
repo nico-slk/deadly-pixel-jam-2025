@@ -46,8 +46,8 @@ class MainScene extends Phaser.Scene {
       groundY,
       "ground"
     );
-    ground.setDisplaySize(this.game.config.width, 50);
-    ground.body.setSize(this.game.config.width, 50);
+    ground.setDisplaySize(this.game.config.width * 2, 50);
+    ground.body.setSize(this.game.config.width * 2, 50);
     ground.body.updateFromGameObject();
     this.ground = ground;
 
@@ -123,22 +123,6 @@ class MainScene extends Phaser.Scene {
         this.zombies.spawn();
       },
     });
-  }
-
-  spawnZombie() {
-    // Randomly choose left or right edge for spawn location
-    const spawnX =
-      Phaser.Math.Between(0, 1) === 0 ? -30 : this.scale.width + 30;
-    const spawnY = Math.floor(this.scale.height * 0.5) - 64; // Just above ground level
-
-    const zombie = zombies.create(spawnX, spawnY, "zombie-walk");
-
-    // Set initial velocity towards hero
-    if (spawnX < hero.x) {
-      zombie.setVelocityX(100);
-    } else {
-      zombie.setVelocityX(-100);
-    }
   }
 }
 
