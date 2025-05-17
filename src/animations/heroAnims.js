@@ -34,6 +34,13 @@ const HERO_ANIMATIONS = [
     frameRate: 24,
     repeat: 0,
   },
+  {
+    id: "hero-attack",
+    spriteSheet: "hero-attack",
+    frames: [0, 1, 2, 3, 4, 5, 6, 7],
+    frameRate: 18,
+    repeat: 0,
+  },
 ];
 
 export const createHeroAnimation = ({ anims }) => {
