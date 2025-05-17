@@ -29,6 +29,12 @@ const HERO_SPRITES = [
     frameWidth: 48,
     frameHeight: 48,
   },
+  {
+    id: "hero-attack",
+    path: "./assets/Katana Attack-Sheathe/player katana attack-sheathe 80x64.png",
+    frameWidth: 80,
+    frameHeight: 60,
+  },
 ];
 
 export const createHeroSprites = ({ load }) => {
