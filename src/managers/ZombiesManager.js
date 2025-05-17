@@ -10,7 +10,6 @@ class ZombiesManager {
   }
 
   update(time, delta, hero) {
-    console.log(this.zombies.length);
     this.zombies.forEach(zombie => zombie.update(time, delta, hero));
   }
 
