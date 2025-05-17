@@ -3,10 +3,12 @@ import { createZombieSprites } from "../sprites.js/zombieSprites.js";
 const ZOMBIE_SPEED = 100;
 
 class Zombie extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y) {
+  constructor(scene, x, y, manager) {
     super(scene, x, y);
     scene.add.existing(this);
     scene.physics.add.existing(this);
+
+    this.manager = manager;
 
     this.setCollideWorldBounds(false);
     this.body.setGravityY(300);
@@ -25,7 +27,7 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
     createZombieSprites(scene);
   }
 
-  update(time, hero) {
+  update(time, delta, hero) {
     if (this.isDying) {
       if (!this.hasPlayedDeath) {
         this.hasPlayedDeath = true;
@@ -47,7 +49,7 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
     if (this.x < hero.x) {              // Zombie is on the left of hero, move right
       this.setVelocityX(ZOMBIE_SPEED);
       this.flipX = false;
-    } else if (this.x > hero.x) {       // Zombie is on the left of hero, move left
+    } else if (this.x > hero.x) {       // Zombie is on the right of hero, move left
       this.setVelocityX(-ZOMBIE_SPEED);
       this.flipX = true;
     } else {                            // Zombie is exactly at hero's x position
