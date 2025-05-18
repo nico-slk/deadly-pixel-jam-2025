@@ -1,5 +1,7 @@
 export function hitZombie(zombie, bullet, scene) {
-  if (zombie.isDying) return;
+  if (zombie.isDying){
+    return;
+  }
   zombie.isDying = true;
 
   // knockback
@@ -73,4 +75,12 @@ export function zombieHitsHero(hero, zombie, scene) {
   if (zombie.manager.zombieTimer) {
     zombie.manager.zombieTimer.remove();
   }
+}
+
+export function handleZombieGroundCollision(zombie, ground) {
+    if (zombie.isDying && zombie.body.touching.down) {
+        zombie.body.setVelocity(0);
+        zombie.body.setFriction(1);
+        zombie.body.setDragX(1000);
+    }
 }

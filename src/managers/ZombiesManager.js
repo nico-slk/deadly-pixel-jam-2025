@@ -1,5 +1,5 @@
 import Zombie from "../entities/Zombie.js";
-import { hitZombie, zombieHitsHero } from "../events/CollisionEvents.js";
+import { hitZombie, zombieHitsHero, handleZombieGroundCollision } from "../events/CollisionEvents.js";
 
 class ZombiesManager {
   constructor(scene) {
@@ -20,7 +20,13 @@ class ZombiesManager {
 
     let zombie = new Zombie(this.scene, x, y, this);
 
-    this.scene.physics.add.collider(zombie, ground);
+    this.groundCollider = this.scene.physics.add.collider(
+      zombie,
+      ground,
+      handleZombieGroundCollision,
+      null,
+      this.scene
+    );
 
     zombie.heroCollider = this.scene.physics.add.collider(hero, zombie, () =>
       zombieHitsHero(hero, zombie, this.scene)
