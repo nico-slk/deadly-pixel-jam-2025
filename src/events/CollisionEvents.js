@@ -1,10 +1,13 @@
 export function hitZombie(zombie, bullet, scene) {
-  // por alguna razón phaser invierte la asignación de los parámetros
   if (zombie.isDying) return;
   zombie.isDying = true;
-  zombie.setVelocity(0);
-  zombie.body.checkCollision.none = true;
-  zombie.body.setAllowGravity(false);
+
+  // knockback
+  const knockbackDirection = bullet.body.velocity.x < 0 ? -1 : 1; // Direction based on bullet
+  const knockbackX = knockbackDirection * 40;
+  const knockbackY = -100;
+  zombie.body.setVelocity(knockbackX, knockbackY);
+
   zombie.anims.play("zombie-death", true);
   bullet.finalize();
 
