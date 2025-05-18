@@ -1,5 +1,9 @@
 import Zombie from "../entities/Zombie.js";
-import { hitZombie, zombieHitsHero, handleZombieGroundCollision } from "../events/CollisionEvents.js";
+import {
+  hitZombie,
+  zombieHitsHero,
+  handleZombieGroundCollision,
+} from "../events/CollisionEvents.js";
 
 class ZombiesManager {
   constructor(scene) {
@@ -14,7 +18,8 @@ class ZombiesManager {
   }
 
   spawn(hero, ground) {
-    const x = Phaser.Math.Between(0, 1) === 0 ? -50 : this.scene.game.config.width + 50;
+    const x =
+      Phaser.Math.Between(0, 1) === 0 ? -50 : this.scene.game.config.width + 50;
     const y = Math.floor(this.scene.game.config.height * 0.5) - 32; // Just above ground level
 
     let zombie = new Zombie(this.scene, x, y, this);
@@ -43,7 +48,7 @@ class ZombiesManager {
     this.zombies.push(zombie);
   }
 
-  startSpawningZombies(hero, ground) {
+  startSpawningZombies({ hero, ground }) {
     this.zombieTimer = this.scene.time.addEvent({
       delay: this.zombieSpawnDelay,
       loop: true,

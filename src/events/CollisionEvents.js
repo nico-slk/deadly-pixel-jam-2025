@@ -1,5 +1,5 @@
 export function hitZombie(zombie, bullet, scene) {
-  if (zombie.isDying){
+  if (zombie.isDying) {
     return;
   }
   zombie.isDying = true;
@@ -43,7 +43,7 @@ export function zombieHitsHero(hero, zombie, scene) {
       zombie.heroCollider = null;
     }
     zombie.isDying = true;
-    
+
     // knockback
     const knockbackDirection = hero.x - zombie.x < 0 ? 1 : -1; // Direction based on hero
     const knockbackX = knockbackDirection * 40;
@@ -81,12 +81,18 @@ export function zombieHitsHero(hero, zombie, scene) {
   if (zombie.manager.zombieTimer) {
     zombie.manager.zombieTimer.remove();
   }
+  setTimeout(() => {
+    scene.gameOver = false;
+    scene.gameOverText.setVisible(false);
+    scene.physics.resume();
+    scene.scene.restart();
+  }, 2000);
 }
 
 export function handleZombieGroundCollision(zombie, ground) {
-    if (zombie.isDying && zombie.body.touching.down) {
-        zombie.body.setVelocity(0);
-        zombie.body.setFriction(1);
-        zombie.body.setDragX(1000);
-    }
+  if (zombie.isDying && zombie.body.touching.down) {
+    zombie.body.setVelocity(0);
+    zombie.body.setFriction(1);
+    zombie.body.setDragX(1000);
+  }
 }

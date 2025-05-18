@@ -9,7 +9,7 @@ import { createHeroAnimation } from "../animations/heroAnims.js";
 import { createZombieAnimation } from "../animations/zombieAnims.js";
 
 // GLOBAL VARIABLES
-let hero;
+// let hero;
 let crosshair;
 let inputManager;
 
@@ -38,10 +38,14 @@ class MainScene extends Phaser.Scene {
 
     this.createGround();
 
-    hero = new Hero(this, this.game.config.width / 2, this.game.config.height * 0.5);
-    
+    this.hero = new Hero(
+      this,
+      this.game.config.width / 2,
+      this.game.config.height * 0.5
+    );
+
     this.zombiesManager = new ZombiesManager(this);
-    
+
     this.configureGroundCollisions();
 
     inputManager = new InputManager(this);
@@ -52,7 +56,7 @@ class MainScene extends Phaser.Scene {
 
     this.setGameOverScreen();
 
-    this.zombiesManager.startSpawningZombies(hero, this.ground);
+    this.zombiesManager.startSpawningZombies(this);
   }
 
   update(time, delta) {
@@ -62,9 +66,9 @@ class MainScene extends Phaser.Scene {
 
     crosshair.update(time, delta, inputManager.pointer);
 
-    hero.update(time, delta, inputManager);
+    this.hero.update(time, delta, inputManager);
 
-    this.zombiesManager.update(time, delta, hero);
+    this.zombiesManager.update(time, delta, this.hero);
   }
 
   // PRIVATE MEMBERS
@@ -81,7 +85,7 @@ class MainScene extends Phaser.Scene {
   }
 
   configureGroundCollisions() {
-    this.physics.add.collider(hero, this.ground);
+    this.physics.add.collider(this.hero, this.ground);
     this.physics.add.collider(this.zombiesManager.zombies, this.ground);
   }
 
