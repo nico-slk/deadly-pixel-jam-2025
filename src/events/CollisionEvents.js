@@ -43,12 +43,17 @@ export function zombieHitsHero(hero, zombie, scene) {
       zombie.heroCollider = null;
     }
     zombie.isDying = true;
-    zombie.setVelocity(0);
-    zombie.body.checkCollision.none = true;
-    zombie.body.setAllowGravity(false);
+    
+    // knockback
+    const knockbackDirection = hero.x - zombie.x < 0 ? 1 : -1; // Direction based on hero
+    const knockbackX = knockbackDirection * 40;
+    const knockbackY = -100;
+    zombie.setVelocity(knockbackX, knockbackY);
+
     zombie.anims.play("zombie-death", true);
     return;
   }
+
   hero.anims.play("hero-death", true);
   hero.setY(437);
   hero.setTint(0xff0000);

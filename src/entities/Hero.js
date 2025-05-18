@@ -129,14 +129,13 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     if (inputManager.EButtonDown()) {
       this.isAttacking = true;
       this.moving = true;
-      // this.body.setSize(36, 36);
-      // this.body.setOffset(25, 12);
       this.body.setSize(10, 26);
       this.body.setOffset(40, 20);
 
       this.flipX = this.heroFacing === "left";
 
-      if (this.flipX) this.body.setOffset(35, 20);
+      if (this.flipX)
+        this.body.setOffset(35, 20);
 
       this.anims.play("hero-attack");
 

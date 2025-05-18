@@ -29,11 +29,8 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
 
   update(time, delta, hero) {
     if (this.isDying) {
-      console.log("Zombie is dying");
-
       if (!this.hasPlayedDeath) {
         this.hasPlayedDeath = true;
-        this.setVelocity(0);
         this.anims.play("zombie-death", true);
         this.once("animationcomplete-zombie-death", () => this.destroy());
       }
