@@ -1,6 +1,6 @@
 import { createZombieSprites } from "../sprites.js/zombieSprites.js";
 
-const ZOMBIE_SPEED = 100;
+const ZOMBIE_SPEED = 30;
 
 class Zombie extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, manager) {
