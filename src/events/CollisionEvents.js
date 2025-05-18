@@ -1,6 +1,6 @@
-export function hitZombie(zombie, bullet, scene) { // por alguna razón phaser invierte la asignación de los parámetros
-  if (zombie.isDying) 
-    return;
+export function hitZombie(zombie, bullet, scene) {
+  // por alguna razón phaser invierte la asignación de los parámetros
+  if (zombie.isDying) return;
   zombie.isDying = true;
   zombie.setVelocity(0);
   zombie.body.checkCollision.none = true;
@@ -20,7 +20,10 @@ export function hitZombie(zombie, bullet, scene) { // por alguna razón phaser i
 
   zombie.once("animationcomplete-zombie-death", () => zombie.destroy());
 
-  zombie.manager.zombieSpawnDelay = Math.max(500, zombie.manager.zombieSpawnDelay * 0.5);
+  zombie.manager.zombieSpawnDelay = Math.max(
+    500,
+    zombie.manager.zombieSpawnDelay * 0.5
+  );
 
   if (zombie.manager.zombieTimer) {
     zombie.manager.zombieTimer.delay = zombie.manager.zombieSpawnDelay;
@@ -29,6 +32,18 @@ export function hitZombie(zombie, bullet, scene) { // por alguna razón phaser i
 }
 
 export function zombieHitsHero(hero, zombie, scene) {
+  if (hero.anims.currentAnim.key === "hero-attack") {
+    if (zombie.heroCollider) {
+      zombie.heroCollider.destroy();
+      zombie.heroCollider = null;
+    }
+    zombie.isDying = true;
+    zombie.setVelocity(0);
+    zombie.body.checkCollision.none = true;
+    zombie.body.setAllowGravity(false);
+    zombie.anims.play("zombie-death", true);
+    return;
+  }
   hero.anims.play("hero-death", true);
   hero.setY(437);
   hero.setTint(0xff0000);
@@ -39,7 +54,11 @@ export function zombieHitsHero(hero, zombie, scene) {
   scene.physics.pause();
 
   zombie.manager.zombies.forEach((z) => {
-    if (z.anims && z.anims.isPlaying && z.anims.currentAnim.key !== "hero-death") {
+    if (
+      z.anims &&
+      z.anims.isPlaying &&
+      z.anims.currentAnim.key !== "hero-death"
+    ) {
       z.anims.stop();
     }
   });

@@ -1,4 +1,3 @@
-import { createHeroAnimation } from "../animations/heroAnims.js";
 import Bullet from "../entities/Bullet.js";
 import { createHeroSprites } from "../sprites.js/heroSprites.js";
 
@@ -10,8 +9,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
 
     this.setCollideWorldBounds(true);
     this.body.setGravityY(300);
-    this.body.setSize(18, 32);
-    this.body.setOffset(14, 9);
+    this.body.setSize(10, 26);
+    this.body.setOffset(20, 14);
 
     this.heroFacing = "right";
 
@@ -21,6 +20,8 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
     // state machine for animations
     this.moving = false;
     this.jumping = false;
+    this.isShooting = false;
+    this.isAttacking = false;
 
     this.bullets = scene.physics.add.group({
       classType: Bullet,
@@ -34,47 +35,63 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
   }
 
   update(time, delta, inputManager) {
-    let moving = false;
-    this.body.setSize(14, 32);
-    this.body.setOffset(14, 10);
-
     if (this.scene.gameOver) return;
 
-    if (this.isShooting) {
-      this.setVelocityX(0);
-      return;
-    }
+    if (this.body.onFloor() && this.jumping) this.jumping = false;
 
-    if (this.body.onFloor() && this.jumping) {
-      this.jumping = false;
+    if (this.isAttacking) return;
+
+    if (this.isShooting) return;
+
+    if (!this.moving) {
+      this.setVelocityX(0);
+      this.anims.play("hero-idle", true);
     }
 
     // movement
-    if (inputManager.left() && this.body.onFloor()) {
-      this.anims.play("hero-run", true);
-      this.setVelocityX(-this.speed);
-      this.flipX = true;
-      this.heroFacing = "left";
-      moving = true;
-    } else if (inputManager.right() && this.body.onFloor()) {
-      this.anims.play("hero-run", true);
-      this.setVelocityX(this.speed);
-      this.heroFacing = "right";
-      this.flipX = false;
-      moving = true;
+    if (this.body.onFloor()) {
+      this.moving = true;
+
+      if (this.jumping || this.isShooting || this.isAttacking) {
+        this.anims.stop("hero-run");
+        this.setVelocityX(0);
+        this.moving = false;
+        return;
+      }
+      if (inputManager.left()) {
+        this.anims.play("hero-run", true);
+        this.setVelocityX(-this.speed);
+        this.heroFacing = "left";
+      }
+
+      if (inputManager.right()) {
+        this.anims.play("hero-run", true);
+        this.setVelocityX(this.speed);
+        this.heroFacing = "right";
+      }
+
+      if (!inputManager.left() && !inputManager.right()) {
+        this.setVelocityX(0);
+        this.anims.play("hero-idle", true);
+      }
+
+      this.flipX = this.heroFacing !== "right";
     }
 
     // Jump
     if (inputManager.up() && this.body.onFloor()) {
-      moving = true;
+      this.moving = true;
       this.anims.play("hero-jump", true);
       this.setVelocityY(-this.jumpSpeed);
+      this.once("animationcomplete-hero-jump", () => {
+        this.moving = false;
+      });
     }
 
     // Animation on the air
     if (!this.body.onFloor()) {
       this.anims.play("hero-jump", true);
-      moving = true;
+      this.moving = true;
       if (inputManager.right()) {
         this.setVelocityX(this.speed);
         this.flipX = false;
@@ -85,22 +102,53 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
-    if (!moving && !inputManager.up()) {
-      this.setVelocityX(0);
-      this.anims.play("hero-idle", true);
+    // shooting
+    if (!this.isShooting) {
+      if (inputManager.leftMouseButtonDown()) {
+        this.moving = true;
+        this.isShooting = true;
+
+        this.setVelocityX(0);
+
+        this.flipX = this.x > inputManager.pointer.x;
+        this.anims.play("hero-shot");
+
+        this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
+        this.once("animationcomplete-hero-shot", () => {
+          this.moving = false;
+          this.isShooting = false;
+        });
+      }
+
+      if (inputManager.shoot()) {
+        this.shootBullet(20, 0);
+      }
     }
 
-    // shooting
-    if (inputManager.leftMouseButtonDown() && !this.isShooting) {
-      this.isShooting = true;
-      this.anims.play("hero-shot", true);
+    // attacking
+    if (inputManager.EButtonDown()) {
+      this.isAttacking = true;
+      this.moving = true;
+      // this.body.setSize(36, 36);
+      // this.body.setOffset(25, 12);
+      this.body.setSize(10, 26);
+      this.body.setOffset(40, 20);
 
-      this.flipX = this.x > inputManager.pointer.x;
+      this.flipX = this.heroFacing === "left";
 
-      this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
-      this.once("animationcomplete-hero-shot", () => {
-        this.isShooting = false;
+      if (this.flipX) this.body.setOffset(35, 20);
+
+      this.anims.play("hero-attack");
+
+      this.setVelocityX(0);
+
+      this.once("animationcomplete-hero-attack", () => {
+        this.isAttacking = false;
+        this.moving = false;
       });
+    } else {
+      this.body.setSize(10, 26);
+      this.body.setOffset(20, 14);
     }
 
     // update bullets
