@@ -30,21 +30,17 @@ class Zombie extends Phaser.Physics.Arcade.Sprite {
   update(time, delta, hero) {
     if (this.isDying) {
       if (!this.hasPlayedDeath) {
-        this.hasPlayedDeath = true;
         this.setVelocity(0);
         this.anims.play("zombie-death", true);
-        this.once("animationcomplete-zombie-death", () => this.destroy());
+        this.once("animationcomplete-zombie-death", () => {
+          this.hasPlayedDeath = true;
+          this.destroy();
+        });
       }
       return;
     }
 
     this.anims.play("zombie-walk", true);
-
-    if (!this.body.onFloor()) {
-      this.anims.play("zombie-falling", true);
-      this.flipX = this.scene.game.config.width / 2 < this.x;
-      return;
-    }
 
     if (this.x < hero.x) {
       // Zombie is on the left of hero, move right

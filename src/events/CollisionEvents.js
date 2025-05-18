@@ -42,6 +42,7 @@ export function zombieHitsHero(hero, zombie, scene) {
     zombie.body.checkCollision.none = true;
     zombie.body.setAllowGravity(false);
     zombie.anims.play("zombie-death", true);
+    zombie.once("animationcomplete-zombie-death", () => zombie.destroy());
     return;
   }
   hero.anims.play("hero-death", true);

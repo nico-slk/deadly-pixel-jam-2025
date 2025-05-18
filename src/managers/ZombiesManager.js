@@ -19,6 +19,7 @@ class ZombiesManager {
     const y = Math.floor(this.scene.game.config.height * 0.5) - 32; // Just above ground level
 
     let zombie = new Zombie(this.scene, x, y, this);
+    zombie.isDying = false;
 
     this.scene.physics.add.collider(zombie, ground);
 
