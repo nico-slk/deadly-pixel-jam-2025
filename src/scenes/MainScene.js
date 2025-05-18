@@ -5,7 +5,6 @@ import ZombiesManager from "../managers/ZombiesManager.js";
 import Crosshair from "../entities/Crosshair.js";
 import Ground from "../entities/Ground.js";
 import InputManager from "../managers/InputManager.js";
-import { hitZombie } from "../events/CollisionEvents.js";
 import { createHeroAnimation } from "../animations/heroAnims.js";
 import { createZombieAnimation } from "../animations/zombieAnims.js";
 
@@ -19,6 +18,8 @@ class MainScene extends Phaser.Scene {
     super({ key: "MainScene" });
     this.gameOver = false;
     this.gameOverText = null;
+    this.ground = {};
+    this.zombiesManager = {};
   }
 
   preload() {
