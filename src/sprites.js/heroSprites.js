@@ -19,13 +19,13 @@ const HERO_SPRITES = [
   },
   {
     id: "hero-death",
-    path: "./assets/Death/PlayerDeath.png",
+    path: "./assets/Death/death_48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
   {
     id: "hero-shot",
-    path: "./assets/Shooting/player shoot 2H 48x48.png",
+    path: "./assets/Shooting/shooting_48.png",
     frameWidth: 48,
     frameHeight: 48,
   },

@@ -56,8 +56,8 @@ export function zombieHitsHero(hero, zombie, scene) {
   }
 
   hero.anims.play("hero-death", true);
-  hero.setY(437);
-  hero.setTint(0xff0000);
+  hero.setY(440);
+  //hero.setTint(0xff0000);
   hero.setVelocity(0);
 
   scene.gameOver = true;
