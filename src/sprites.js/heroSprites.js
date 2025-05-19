@@ -1,13 +1,13 @@
 const HERO_SPRITES = [
   {
     id: "hero-idle",
-    path: "./assets/Idle/Player Idle 48x48.png",
+    path: "./assets/Idle/idle_48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
   {
     id: "hero-jump",
-    path: "./assets/Jump/player new jump 48x48.png",
+    path: "./assets/Jump/jump_48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
