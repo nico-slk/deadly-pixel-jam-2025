@@ -52,7 +52,7 @@ class ZombiesManager {
     this.zombieTimer = this.scene.time.addEvent({
       delay: this.zombieSpawnDelay,
       loop: true,
-      callback: () => this.spawn(hero, ground),
+      // callback: () => this.spawn(hero, ground),
       callbackScope: this,
     });
   }

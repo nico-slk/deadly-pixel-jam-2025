@@ -10,7 +10,7 @@ import { createZombieAnimation } from "../animations/zombieAnims.js";
 
 // GLOBAL VARIABLES
 // let hero;
-let crosshair;
+// let crosshair;
 let inputManager;
 
 class MainScene extends Phaser.Scene {
@@ -20,6 +20,7 @@ class MainScene extends Phaser.Scene {
     this.gameOverText = null;
     this.ground = {};
     this.zombiesManager = {};
+    this.parallaxObjects = [];
   }
 
   preload() {
@@ -28,10 +29,32 @@ class MainScene extends Phaser.Scene {
     Crosshair.preload(this);
     Bullet.preload(this);
     Ground.preload(this);
+
+    this.load.image("bush", "assets/ImagenesPruebas/bush1.png");
+    this.load.image("cloud1", "assets/ImagenesPruebas/cloud1.png");
+    this.load.image("cloud2", "assets/ImagenesPruebas/cloud2.png");
   }
 
   create() {
-    this.cameras.main.setBackgroundColor("#808080");
+    // this.cameras.main.setBackgroundColor("#808080");
+    this.cameras.main.setBackgroundColor("#87CEEB");
+
+    const cloud2 = this.add.sprite(100, 150, "cloud2");
+    cloud2.setScale(0.5);
+    cloud2.baseX = 100;
+    cloud2.parallaxFactor = 0.3;
+    this.parallaxObjects.push(cloud2);
+
+    const cloud1 = this.add.sprite(300, 100, "cloud1");
+    cloud1.setScale(0.5);
+    cloud1.baseX = 300;
+    cloud1.parallaxFactor = 0.5;
+    this.parallaxObjects.push(cloud1);
+
+    const bush = this.add.sprite(300, 440, "bush");
+    bush.baseX = 300;
+    bush.parallaxFactor = 0.8;
+    this.parallaxObjects.push(bush);
 
     createHeroAnimation(this);
     createZombieAnimation(this);
@@ -50,13 +73,16 @@ class MainScene extends Phaser.Scene {
 
     inputManager = new InputManager(this);
 
-    crosshair = new Crosshair(this, 0, 0);
+    this.crosshair = new Crosshair(this, 0, 0);
 
     this.input.setDefaultCursor("none");
 
     this.setGameOverScreen();
 
     this.zombiesManager.startSpawningZombies(this);
+
+    this.cameras.main.setBounds(0, 0, 2000, this.game.config.width - 500);
+    this.cameras.main.startFollow(this.hero, true, 0.1, 0.1);
   }
 
   update(time, delta) {
@@ -64,7 +90,13 @@ class MainScene extends Phaser.Scene {
       return;
     }
 
-    crosshair.update(time, delta, inputManager.pointer);
+    const scrollX = this.cameras.main.scrollX;
+
+    this.parallaxObjects.forEach((obj) => {
+      obj.x = obj.baseX + scrollX * obj.parallaxFactor;
+    });
+
+    this.crosshair.update(time, delta, inputManager);
 
     this.hero.update(time, delta, inputManager);
 

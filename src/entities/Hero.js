@@ -107,13 +107,15 @@ class Hero extends Phaser.Physics.Arcade.Sprite {
       if (inputManager.leftMouseButtonDown()) {
         this.moving = true;
         this.isShooting = true;
-
         this.setVelocityX(0);
 
-        this.flipX = this.x > inputManager.pointer.x;
+        const worldX = inputManager.getWorldPointerX();
+        const worldY = inputManager.getWorldPointerY();
+
+        this.flipX = this.x > worldX;
         this.anims.play("hero-shot");
 
-        this.shootBullet(inputManager.pointer.x, inputManager.pointer.y);
+        this.shootBullet(worldX, worldY);
         this.once("animationcomplete-hero-shot", () => {
           this.moving = false;
           this.isShooting = false;
