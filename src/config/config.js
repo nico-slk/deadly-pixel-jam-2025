@@ -1,5 +1,5 @@
 const config = {
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   width: 1024,
   height: 800,
   parent: "game-container",

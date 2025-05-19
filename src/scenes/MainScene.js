@@ -81,7 +81,8 @@ class MainScene extends Phaser.Scene {
 
     this.zombiesManager.startSpawningZombies(this);
 
-    this.cameras.main.setBounds(0, 0, 2000, this.game.config.width - 500);
+    this.physics.world.setBounds(0, 0, 1500, this.game.config.height);
+    this.cameras.main.setBounds(0, 0, 1500, this.game.config.width);
     this.cameras.main.startFollow(this.hero, true, 0.1, 0.1);
   }
 
