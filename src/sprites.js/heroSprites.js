@@ -13,7 +13,7 @@ const HERO_SPRITES = [
   },
   {
     id: "hero-run",
-    path: "./assets/Run/player run 48x48.png",
+    path: "./assets/Run/run_48.png",
     frameWidth: 48,
     frameHeight: 48,
   },
