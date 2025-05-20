@@ -30,31 +30,32 @@ class MainScene extends Phaser.Scene {
     Bullet.preload(this);
     Ground.preload(this);
 
-    this.load.image("bush", "assets/ImagenesPruebas/bush1.png");
-    this.load.image("cloud1", "assets/ImagenesPruebas/cloud1.png");
-    this.load.image("cloud2", "assets/ImagenesPruebas/cloud2.png");
+    this.load.image("edif1", "assets/ImagenesPruebas/edif1.png");
+    this.load.image("edif2", "assets/ImagenesPruebas/edif2.png");
+    this.load.image("edif3", "assets/ImagenesPruebas/edif3.png");
   }
 
   create() {
     // this.cameras.main.setBackgroundColor("#808080");
     this.cameras.main.setBackgroundColor("#87CEEB");
 
-    const cloud2 = this.add.sprite(100, 150, "cloud2");
-    cloud2.setScale(0.5);
-    cloud2.baseX = 100;
-    cloud2.parallaxFactor = 0.3;
-    this.parallaxObjects.push(cloud2);
+    const edif1 = this.add.sprite(300, 250, "edif1");
+    edif1.setScale(0.7);
+    edif1.baseX = 500;
+    edif1.parallaxFactor = 0.7;
+    this.parallaxObjects.push(edif1);
 
-    const cloud1 = this.add.sprite(300, 100, "cloud1");
-    cloud1.setScale(0.5);
-    cloud1.baseX = 300;
-    cloud1.parallaxFactor = 0.5;
-    this.parallaxObjects.push(cloud1);
+    const edif2 = this.add.sprite(100, 300, "edif2");
+    edif2.setScale(0.6);
+    edif2.baseX = 500;
+    edif2.parallaxFactor = 0.8;
+    this.parallaxObjects.push(edif2);
 
-    const bush = this.add.sprite(300, 440, "bush");
-    bush.baseX = 300;
-    bush.parallaxFactor = 0.8;
-    this.parallaxObjects.push(bush);
+    const edif3 = this.add.sprite(300, 350, "edif3");
+    edif3.setScale(0.4);
+    edif3.baseX = 600;
+    edif3.parallaxFactor = 0.3;
+    this.parallaxObjects.push(edif3);
 
     createHeroAnimation(this);
     createZombieAnimation(this);
