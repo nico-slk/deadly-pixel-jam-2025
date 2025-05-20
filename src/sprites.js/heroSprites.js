@@ -31,7 +31,7 @@ const HERO_SPRITES = [
   },
   {
     id: "hero-attack",
-    path: "./assets/Katana Attack-Sheathe/player katana attack-sheathe 80x64.png",
+    path: "./assets/Katana Attack-Sheathe/katana_80x64.png",
     frameWidth: 80,
     frameHeight: 60,
   },
